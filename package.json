@@ -1,0 +1,21 @@
+{
+  "name": "socialsubscribe",
+  "version": "1.0.0",
+  "description": "",
+  "main": "socialSubscribe.js",
+  "scripts": {
+    "devlaunch": "npm install && nodemon mockApp.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "*",
+    "ramda": "^0.23.0",
+    "request": "^2.79.0",
+    "request-promise": "^4.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "*"
+  }
+}
