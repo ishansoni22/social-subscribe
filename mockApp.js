@@ -15,3 +15,13 @@ server.get('/', function(req, res){
   socialSubscribe.register(config)
   res.end("Hi")
 })
+
+socialSubscribe.on('registerSuccessEvent', function(result){
+                   console.log("Successful Register Event")
+                   console.log(result)
+                   })
+socialSubscribe.on('registerFailedEvent', function(error){
+                   console.log("Failed Register Event")
+                   console.log(error)
+                   })                   
+                   
