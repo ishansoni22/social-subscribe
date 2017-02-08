@@ -15,24 +15,24 @@ module.exports = function(){
                         var responseCode = response.statusCode
                         if(error){
                           console.log("Error Occured while making request for uri", options.uri)
-                          reject(error)                          
+                          reject(error)
                         }
                         else if(responseCode >=200 && responseCode<300){
                            console.log("Reuqest to uri succedded for URI ", options.uri)
                            var result = {
                                    data : body
                                }
-                               resolve(result)                            
+                               resolve(result)
                         }else{
                            console.log("Error Occured while making request for uri", options.uri)
                            var errorObj = {
                                status : response.statusCode,
                                error : body
                            }
-                           reject(errorObj)                            
+                           reject(errorObj)
                         }
                     })
-                })    
+                })
               }
   }
   return requestHelper

@@ -1,7 +1,7 @@
 "use strict";
 
 const EventEmitter = require('events');
-const requestHelper = require('./requestHelper.js')()
+const requestHelper = require('./requestHelper.ts')()
 const R = require('ramda')
 const graphApiHost = 'https://graph.facebook.com'
 const Task = require('data.task')

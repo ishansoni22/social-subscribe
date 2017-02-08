@@ -1,6 +1,6 @@
 var express = require("express")
-var config = require("./config/mockConfig.js")()
-var socialSubscribe = require("./socialSubscribe.js")()
+var config = require("./config/mockConfig.ts")()
+var socialSubscribe = require("./socialSubscribe.ts")()
 
 var server = express()
 server.listen(9999, function(err){
