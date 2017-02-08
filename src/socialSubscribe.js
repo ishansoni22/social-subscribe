@@ -12,26 +12,26 @@ var socialSubscribe = new socialSubscribeClass()
 
 socialSubscribe.register = function(configInterface){
     socialSubscribe['configParams'] = configInterface
-    register(socialSubscribe.configParams).fork((error) => socialSubscribe.emit('registerFailedEvent', error), 
+    register(socialSubscribe.configParams).fork((error) => socialSubscribe.emit('registerFailedEvent', error),
                            (result) => socialSubscribe.emit('registerSuccessEvent', result))
 }
 
-var getLongLivedAccessToken = R.curry(function(host, config){    
+var getLongLivedAccessToken = R.curry(function(host, config){
      var fbLongLivedAccessTokenURI = host.concat('/oauth/access_token?grant_type=fb_exchange_token&client_id=')
                 .concat(config.getAppID)
                 .concat('&client_secret=')
                 .concat(config.getAppSecret)
                 .concat('&fb_exchange_token=')
                 .concat(config.getShortLivedAccessToken)
-     
+
      var options = {
          uri : fbLongLivedAccessTokenURI
-     }    
-     return requestHelper.request(options)     
+     }
+     return requestHelper.request(options)
 })
 
 var setLongLivedFBAccessToken = function(result){
-    //TODO parse body properly to get only the token - 
+    //TODO parse body properly to get only the token -
     socialSubscribe.configParams.setLongLivedAccessToken(result.data)
     //return updated config object
     return {sucess : true}
@@ -43,8 +43,8 @@ var getUserPageDetails = R.curry(function(host, result){
        uri : pageDetailsAndTokensURI,
        qs: {
                  access_token: socialSubscribe.configParams.getLongLivedAccessToken
-           }       
-   }    
+           }
+   }
     return requestHelper.request(options)
 })
 
@@ -53,19 +53,19 @@ var subscribePages = R.curry(function(host, result){
         var pages = JSON.parse(result.data)["data"]
         var successAttempts = 0
         var success = false
-        
+
         //for each of the page, subscribe the given app and add activity webhooks.
         pages.map(function(page){
             subscribeAndAddWebhook(page).fork((error) => reject(error), (result) => {successAttempts ++;
                                                                                            if(successAttempts === pages.length){
-                                                                                                 resolve({success : true})      
+                                                                                                 resolve({success : true})
                                                                                              }
                                                                                           }
                                              )
         })
-        
+
     })
-})  
+})
 
 var subscribePageForApp = R.curry(function(host, page){
     var pageSubscriptionURI = host.concat("/")
@@ -95,10 +95,10 @@ var addWebhooksForPageActivity = R.curry(function(host, subscriptionResult){
                object : 'page',
                callback_url : socialSubscribe.configParams.getCallBackURL,
                fields : 'feed',
-               verify_token : 'random'    
+               verify_token : 'random'
                }
-        }  
- return requestHelper.request(activityOptions)    
+        }
+ return requestHelper.request(activityOptions)
 })
 
 var subscribeAndAddWebhook = R.compose(R.chain(addWebhooksForPageActivity(graphApiHost)), subscribePageForApp(graphApiHost))

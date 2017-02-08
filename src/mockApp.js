@@ -1,5 +1,5 @@
 var express = require("express")
-var config = require("./mockConfig.js")()
+var config = require("./config/mockConfig.js")()
 var socialSubscribe = require("./socialSubscribe.js")()
 
 var server = express()
@@ -23,5 +23,4 @@ socialSubscribe.on('registerSuccessEvent', function(result){
 socialSubscribe.on('registerFailedEvent', function(error){
                    console.log("Failed Register Event")
                    console.log(error)
-                   })                   
-                   
+                   })
