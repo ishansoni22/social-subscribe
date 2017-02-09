@@ -5,7 +5,7 @@ npm-debug.log
 logs
 *.log
 npm-debug.log*
-
+typings
 # Runtime data
 pids
 *.pid

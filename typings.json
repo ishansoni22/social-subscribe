@@ -1,0 +1,12 @@
+{
+  "globalDependencies": {
+    "chai": "registry:dt/chai#3.4.0+20160926213833",
+    "mocha": "registry:env/mocha#2.2.5+20160926180742",
+    "node": "registry:dt/node#7.0.0+20170204020307",
+    "require": "registry:dt/require#2.1.20+20160919185614"
+  },
+  "dependencies": {
+    "ramda": "registry:dt/ramda#0.0.0+20170118060728",
+    "request": "registry:dt/request#0.0.0+20161230173603"
+  }
+}
