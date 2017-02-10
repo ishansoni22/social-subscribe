@@ -1,40 +1,43 @@
 "use strict";
 
-import * as EventEmitter from "events";
+import {EventEmitter} from "events";
 import * as R from "ramda";
-// const Task = require('data.task')
-import {configInterface} from "./config/config";
-import {subscribePages, getUserPageDetails, getLongLivedAccessToken,
-   setLongLivedFBAccessToken} from "./services/subscribeService";
-// import {requestHelper as requestHelperCurry} from "./";
-// let requestHelper = requestHelperCurry(Task);
+import {IConfig} from "./config/config";
+import {getLongLivedAccessToken} from "./services/subscribeService";
+
+// import {
+//   getUserPageDetails, getLongLivedAccessToken,
+//   setLongLivedFBAccessToken, addWebhooksForPageActivity, subscribePageForApp,
+//   extractPagesFromUserpageDetailsResponse
+// } from "./services/subscribeService";
 
 
-const graphApiHost = 'https://graph.facebook.com'
+const graphApiHost = "https://graph.facebook.com"
 
 
-export class socialSubscribeClass extends EventEmitter {
+export class SocialSubscribeClass extends EventEmitter {
 
-  public subscribe(config:configInterface) {
+  public subscribe(config: IConfig) {
 
-    let register: Function =   R.compose(R.chain(subscribePages(config.graphApiHost)),
-      R.chain(getUserPageDetails(config.graphApiHost)),
-      R.map(setLongLivedFBAccessToken),
-      getLongLivedAccessToken(config.graphApiHost));
+  //   const subscribeAndAddWebhook: any = R.compose(
+  //     R.chain(addWebhooksForPageActivity(config.graphApiHost)),
+  //     subscribePageForApp(config.graphApiHost));
+  //
+  //   const register: Function = R.compose(R.chain(subscribePages(config.graphApiHost)),
+  //     R.map(extractPagesFromUserpageDetailsResponse)
+  //   R.chain(getUserPageDetails(config)),
+  //     R.map(setLongLivedFBAccessToken),
+  //     getLongLivedAccessToken(config)
+  // )
+  //   ;
 
-    //@ToDo: Validations for config object
-    register(config)
-      .fork(
-             (error: Error) => socialSubscribe.emit('registerFailedEvent', error),
-             (result: any) => socialSubscribe.emit('registerSuccessEvent', result)
-           );
+    // const register: Function = R.pPipe(getLongLivedAccessToken(config))
+
+    // @ToDo: Validations for config object
+    // register(config)
+    //   .fork(
+    //     (error: Error) => this.emit("registerFailedEvent", error),
+    //     (result: any) => this.emit("registerSuccessEvent", result)
+    //   );
   }
 }
-
-
-
-// socialSubscribe.register = function(configInterface){
-//     socialSubscribe['configParams'] = configInterface
-//     register(socialSubscribe.configParams).fork((error) => socialSubscribe.emit('registerFailedEvent', error),
-//                            (result) => socialSubscribe.emit('registerSuccessEvent', result))
-// }

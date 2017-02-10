@@ -1,42 +1,48 @@
 {
-  "name": "social-subscribe",
-  "version": "0.0.0",
-  "description": "social-subscribe",
-  "license": "MIT",
-  "repository": "",
-  "author": "",
-  "keywords": [
-    ""
-  ],
-  "files": [
-    "lib"
-  ],
-  "main": "lib/index.js",
-  "typings": "lib/index.d.ts",
-  "scripts": {
-    "clean": "rimraf lib",
-    "lint": "tslint --force --format verbose \"src/**/*.ts\"",
-    "build": "npm run clean && npm run lint && echo Using TypeScript && tsc --version && tsc --pretty",
-    "test": "npm run build && mocha --compilers ts:ts-node/register --recursive test/**/*-spec.ts",
-    "watch": "npm run build -- --watch",
-    "watch:test": "npm run test -- --watch"
-  },
-  "dependencies": {
-    "data.task": "^3.1.1",
-    "ramda": "^0.23.0",
-    "request": "^2.79.0"
-  },
-  "devDependencies": {
-    "chai": "^3.0.0",
-    "express": "*",
-    "mocha": "^3.0.0",
-    "rimraf": "^2.0.0",
-    "ts-node": "^1.0.0",
-    "tslint": "^4.0.0",
-    "typescript": "^2.0.0",
-    "typings": "^2.1.0"
-  },
-  "engines": {
-    "node": ">=4.0.0"
-  }
+    "name": "social-subscribe",
+    "version": "0.0.0",
+    "description": "social-subscribe",
+    "license": "MIT",
+    "repository": "",
+    "author": "",
+    "keywords": [
+        ""
+    ],
+    "files": [
+        "lib"
+    ],
+    "main": "lib/index.js",
+    "typings": "lib/index.d.ts",
+    "scripts": {
+        "test": "gulp test",
+        "build": "gulp build",
+        "clean": "gulp clean",
+        "lint": "gulp lint",
+        "watch": "gulp watch"
+    },
+    "dependencies": {
+        "bluebird": "^3.4.7",
+        "data.task": "^3.1.1",
+        "ramda": "^0.23.0",
+        "request": "^2.79.0",
+        "sinon": "^1.17.7"
+    },
+    "devDependencies": {
+        "chai": "^3.0.0",
+        "express": "*",
+        "mocha": "^3.0.0",
+        "tslint": "^4.0.0",
+        "typescript": "^2.0.0",
+        "typings": "^2.1.0",
+        "del": "^2.2.1",
+        "dotbin": "^1.0",
+        "gulp": "^3.9.0",
+        "gulp-help": "^1.6.0",
+        "gulp-mocha": "^3.0.0",
+        "gulp-tslint": "^6.0",
+        "ts-node": "^1.2.2"
+    },
+    "engines": {
+        "node": ">=4.0.0"
+    }
 }

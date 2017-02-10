@@ -1,26 +1,24 @@
 "use strict";
-import * as R from "ramda";
+
 import * as rq from "request";
-export const requestService = R.curry((Task:any, options: rq.Options) => {
-    return new Task(function(reject: any, resolve: any) {
-        rq(options, function(error, response, body) {
-            //if response code is in 2xx, accept, else reject this task
-            var responseCode = response.statusCode
+import R = require("ramda")
+
+export const requestService = (Task: any) => (options: rq.Options) => {
+
+    return new Task((reject: any, resolve: any) => {
+        options = R.assoc("json", true, options);
+
+        rq(options, (error, response, body) => {
+            // if response code is in 2xx, accept, else reject this task
+            const responseCode = response.statusCode;
             if (error) {
-                reject(error)
-            }
-            else if (responseCode >= 200 && responseCode < 300) {
-                var result = {
-                    data: body
-                }
-                resolve(result)
+                reject(error);
+            } else if (responseCode >= 200 && responseCode < 300) {
+                resolve(body);
             } else {
-                var errorObj = {
-                    status: response.statusCode,
-                    error: body
-                }
-                reject(errorObj)
+                const errorObj = {status: response.statusCode, error: body};
+                reject(errorObj);
             }
-        })
-    })
-});
+        });
+    });
+};
