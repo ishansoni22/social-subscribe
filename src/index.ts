@@ -2,7 +2,7 @@ const Task = require("data.task");
 const R = require("ramda");
 import  {EventEmitter} from "events";
 
-import {IConfig} from "../lib/config/config";
+import {IConfig} from "./config/config";
 import {
     getUserPageDetails as getUserPageDetailsCurry,
     extractLongLivedAccessTokenFromResponse,
@@ -17,8 +17,7 @@ import {
     persistLongLivedAccessToken as persistLongLivedAccessTokenCurry,
 } from "../src/services/accessTokenService";
 
-class SocialSubscribe extends EventEmitter {};
-const socialSubscribe = new SocialSubscribe();
+export class SocialSubscribe extends EventEmitter {};
 
 export const register = (config: IConfig) => {
     const persistLongLivedAccessToken = persistLongLivedAccessTokenCurry(Task)(config);
@@ -45,13 +44,14 @@ export const register = (config: IConfig) => {
         R.map(R.map(subscribePageForApp)),
         pageIds);
 
+    const socialSubscribe = new SocialSubscribe();
     socialSubscribe.on("start", () => {
         registerAppUrlForPageActivity(config).fork((error: Error) => {
             socialSubscribe.emit("error", error);
         }, (success: any) => {
             socialSubscribe.emit("success", success);
         });
-    };
+    });
 
     return socialSubscribe;
 };
