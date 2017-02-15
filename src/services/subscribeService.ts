@@ -12,7 +12,7 @@ import {Options as requestOptions} from "request";
 
 const requestService = requestServiceCurry(Task);
 
-export const getLongLivedAccessToken = (config: IConfig) => {
+export const getLongLivedAccessToken = (config: IConfig): any => {
     const fbLongLivedAccessTokenURI = config.graphApiHost
         .concat("/oauth/access_token?grant_type=fb_exchange_token&client_id=")
         .concat(config.appId)
@@ -27,79 +27,64 @@ export const getLongLivedAccessToken = (config: IConfig) => {
     return  requestService(options);
 };
 
-export const extractLongLivedAccessTokenFromResponse = (responseString: string) =>
-    responseString.split("&")[0].split("=")[1];
+export const extractLongLivedAccessTokenFromResponse = (responseString: string): string =>
+    responseString &&  responseString.split("&")[0].split("=")[1];
+
+export const getUserPageDetails =  (config: IConfig) => (longLivedAccessToken: string):any => {
+    const pageDetailsAndTokensURI = config.graphApiHost.concat("/me/accounts")
+    const options = {
+        qs: {access_token: longLivedAccessToken},
+        uri: pageDetailsAndTokensURI};
+    return requestService(options);
+};
 
 
-// export const getUserPageDetails =  (config: IConfig) => (longLivedAccessToken: string) => {
-//     const pageDetailsAndTokensURI = config.graphApiHost.concat("/me/accounts")
-//     const options = {
-//         qs: {access_token: longLivedAccessToken},
-//         uri: pageDetailsAndTokensURI};
-//     return requestService(options);
-// }
 
+export const subscribePageForApp = (config: IConfig) =>  (page: any): any => {
+    const pageSubscriptionURI = config.graphApiHost.concat("/")
+        .concat(page.id)
+        .concat("/subscribed_apps");
+    const subscribeOptions: requestOptions = {
+        method: "POST",
+        qs: {
+            access_token: page.access_token,
+        },
+        uri: pageSubscriptionURI,
+    };
+    return requestService(subscribeOptions);
+};
 
-//     // TODO parse body properly to get only the token -
-//     socialSubscribe.configParams.setLongLivedAccessToken(result.data)
-//     // return updated config object
-//     return {"sucess": true};
-// }
-//
+export const addWebhooksForPageActivity = (config: IConfig) => (appAccessToken: string):any =>  {
+    const pageActivitySubscriptionURI = config.graphApiHost.concat("/")
+        .concat(config.appId)
+        .concat("/subscriptions")
+    const activityOptions: requestOptions = {
+        form: {
+            callback_url: config.callBackURL,
+            fields: "feed",
+            object: "page",
+            verify_token: "random",
+        },
+        method: "POST",
+        qs: {
+            access_token: appAccessToken,
+        },
+        uri: pageActivitySubscriptionURI,
+    };
+    return requestService(activityOptions);
+};
 
-//
-//
-// export const extractPagesFromUserpageDetailsResponse = (result: any) =>
-// (result && JSON.parse(result.data) && JSON.parse(result.data).data) || [];
-//
-// // export const subscribePages = R.curry(function(host: string, result:any, subscribeAndAddWebhook){
-// //     return new Task(function(reject:Function , resolve:Function){
-// //         const pages = JSON.parse(result.data)["data"]
-// //         const successAttempts = 0
-// //         const success = false
-// //
-// //         //for each of the page, subscribe the given app and add activity webhooks.
-// //         pages.map(subscribeAndAddWebhook);
-// //
-// //     })
-// // })
-//
-// export const subscribePageForApp = R.curry((host: string, page: any) => {
-//     const pageSubscriptionURI = host.concat("/")
-//         .concat(page.id)
-//         .concat("/subscribed_apps");
-//     const subscribeOptions: requestOptions = {
-//         method: "POST",
-//         qs: {
-//             access_token: page.access_token,
-//         },
-//         uri: pageSubscriptionURI,
-//     };
-//     return requestService(subscribeOptions);
-// });
-//
-//
-// export const addWebhooksForPageActivity = function (config: IConfig) {
-//     const pageActivitySubscriptionURI = config.graphApiHost.concat("/")
-//         .concat(config.appId)
-//         .concat("/subscriptions")
-//     const activityOptions: requestOptions = {
-//         method: "POST",
-//         uri: pageActivitySubscriptionURI,
-//         qs: {
-//             access_token: config.repository.getAppAccessToken(config.appId)
-//         },
-//         form: {
-//             callback_url: socialSubscribe.configParams.getCallBackURL,
-//             object: "page",
-//             fields: "feed",
-//             verify_token: "random"
-//         }
-//     }
-//     return requestService(activityOptions)
-// };
-//
-//
-
-
+export const getAppAccessToken = (config: IConfig) => (): any => {
+    const appAccessTokenURI = config.graphApiHost.concat("/oauth/access_token");
+    const appAccessTokenOptions: requestOptions = {
+        method: "GET",
+        qs: {
+            client_id: config.appId,
+            client_secret: config.appSecret,
+            grant_type: "client_credentials",
+        },
+        uri: appAccessTokenURI,
+    };
+    return requestService(appAccessTokenOptions);
+};
 

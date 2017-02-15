@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "bluebird-global": "registry:dt/bluebird-global#3.0.0+20161231162150",
-    "ramda": "registry:dt/ramda#0.0.0+20170118060728",
+    "ramda": "registry:npm/ramda#0.23.0+20170204172743",
     "request": "registry:dt/request#0.0.0+20161230173603",
     "sinon": "registry:npm/sinon#1.16.0+20160723033700"
   }

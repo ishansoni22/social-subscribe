@@ -10,10 +10,9 @@ export class RepositoryClass implements IRepository {
 
     public getLongLivedAccessToken(shortLivedAccessToken: string): PromiseLike<string> {
         return new Promise((resolve: Function, reject: Function) => {
-            if(this.tokens.has(shortLivedAccessToken)) {
-                resolve(this.tokens.get(shortLivedAccessToken))
-            }
-            else {
+            if (this.tokens.has(shortLivedAccessToken)) {
+                resolve(this.tokens.get(shortLivedAccessToken));
+            } else {
                 reject();
             }
         });
@@ -21,8 +20,8 @@ export class RepositoryClass implements IRepository {
 
     public getAppAccessToken(appId: string): PromiseLike<string> {
         return new Promise((resolve: Function, reject: Function) => {
-            if(this.tokens.has(appId)) {
-                resolve(this.tokens.get(appId))
+            if (this.tokens.has(appId)) {
+                resolve(this.tokens.get(appId));
             }
             else {
                 reject();

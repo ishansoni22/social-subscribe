@@ -8,7 +8,7 @@ import {getLongLivedAccessToken} from "./services/subscribeService";
 // import {
 //   getUserPageDetails, getLongLivedAccessToken,
 //   setLongLivedFBAccessToken, addWebhooksForPageActivity, subscribePageForApp,
-//   extractPagesFromUserpageDetailsResponse
+//   extractPagesFromUserPageDetailsResponse
 // } from "./services/subscribeService";
 
 
@@ -24,7 +24,7 @@ export class SocialSubscribeClass extends EventEmitter {
   //     subscribePageForApp(config.graphApiHost));
   //
   //   const register: Function = R.compose(R.chain(subscribePages(config.graphApiHost)),
-  //     R.map(extractPagesFromUserpageDetailsResponse)
+  //     R.map(extractPagesFromUserPageDetailsResponse)
   //   R.chain(getUserPageDetails(config)),
   //     R.map(setLongLivedFBAccessToken),
   //     getLongLivedAccessToken(config)

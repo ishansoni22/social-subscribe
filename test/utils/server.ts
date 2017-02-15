@@ -3,6 +3,7 @@
  */
 
 import * as http from "http";
+import * as url from "querystring";
 
 
 /**
@@ -10,15 +11,20 @@ import * as http from "http";
  * @param {int} port: Port for the server to run on
  */
 export const createServer = (port: number) => (callback: Function) => {
-    var server = http.createServer(function (request, response) {
-        var data = "";
+    const server = http.createServer(function (request, response) {
+        let data = "";
 
-        request.on("data", function (chunk: any) {
+        request.on("data", (chunk: any) => {
             data += chunk;
         });
+        response.writeHead(200, {"Content-Type": "application/text"});
 
-        response.writeHead(200, {"Content-Type": "application/json"});
-        response.end(JSON.stringify({message: "not implemented"}));
+        let params: any = {};
+        if (request.method === "GET") {
+            params = url.parse(request.url);
+        }
+
+        response.end(params["hub.challenge"]);
     });
 
     if (port) {

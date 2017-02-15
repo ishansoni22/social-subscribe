@@ -4,17 +4,27 @@
 
 import {IConfig} from "../config/config";
 
-export const lookupAppAccessToken = (config: IConfig) =>
-  config.repository.getAppAccessToken(config.appId);
+export const lookupAppAccessToken = (Task: any) => (config: IConfig) =>
+    new Task((reject: any, resolve: any) => {
+        config.repository.getAppAccessToken(config.appId).then(resolve, reject);
+    });
 
-export const lookUpLongLivedAccessToken = (config: IConfig) =>
-  config.repository.getLongLivedAccessToken(config.shortLivedAccessToken);
+export const lookUpLongLivedAccessToken = (Task: any) => (config: IConfig): any => (): any =>
+    new Task((reject: any, resolve: any) => {
+        config.repository.getLongLivedAccessToken(config.shortLivedAccessToken).then(resolve, reject);
+    });
 
-export const persistLongLivedAccessToken = (config: IConfig) =>  (longLivedAccessToken: string) =>
-  config.repository.setLongLivedAccessToken(config.shortLivedAccessToken, longLivedAccessToken);
+export const persistLongLivedAccessToken = (Task: any) => (config: IConfig): any =>
+    (longLivedAccessToken: string): any =>
+        new Task((reject: any, resolve: any) => {
+            config.repository.setLongLivedAccessToken(config.shortLivedAccessToken, longLivedAccessToken)
+                .then(resolve, reject);
+        });
 
-export const persistAppAccessToken =  (config: IConfig) => ( appAccessToken: string) =>
-  config.repository.setAppAccessToken(config.appId, appAccessToken);
+export const persistAppAccessToken = (Task: any) => (config: IConfig) => (appAccessToken: string) =>
+    new Task((reject: any, resolve: any) => {
+        config.repository.setAppAccessToken(config.appId, appAccessToken).then(resolve, reject);
+    });
 
 // export const updateTokens = (config: IConfig) => (updateObj: any)  => Object.assign({}, config, updateObj);
 
