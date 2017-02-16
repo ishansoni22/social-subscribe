@@ -9,6 +9,7 @@ const R = require("ramda");
 const Task = require("data.task");
 const localtunnel = require('localtunnel');
 
+
 // import * as sinon from "sinon";
 import {
     getUserPageDetails as getUserPageDetailsCurry,
@@ -25,9 +26,8 @@ import {
 } from "../../src/services/accessTokenService";
 
 
-import {createServer as createServerCurry} from "../utils/server";
-
 import {repository} from "../utils/repository";
+import {createServer as createServerCurry} from "../utils/server";
 
 const localServerPort = 3050;
 const createServer = createServerCurry(localServerPort);
@@ -37,9 +37,9 @@ describe("Test subscribe service", function () {
     this.timeout(50000);
     let server: any;
     let tunnel: any;
-    const shortLivedAccessToken = "EAADvbGAQt94BADymvRx4udMsjOHynQe6bI5Spi19cFiMZAXk0vyfTCFG8wWmUBZAvKuKh8FsbEs75m" +
-        "sew4EHfaAGgXOOFmsWRkfeML3fc7vfFZCXMQh2022F8LZB2BnQXAZBXvtUP250ZBozDNFZA5yy3LAcs06m99m83EIF10oWWaknweiS5XZ" +
-        "A1Fg0IgbZCVJ8ZD";
+    const shortLivedAccessToken = "EAADvbGAQt94BAJ7qNAZBEmdTiipSiRePSvYPRQbCt0jYEwsa5YZC2xjNWlN5JuEH8LsJCbFjje4t" +
+        "vHkSU0YUZC849nNMbsyFFPvZBhiUVKfmBIpK2bMbQtpmS9ZARVbRAIQt7fQ3itXaZAM5jIpKaKtJ7MjCR02K8LXndevJFI04SAQ4effP" +
+        "DcVfF1Tlm4ZBZA8ZD";
     const config = {
         appId: "263248747214814",
         appSecret: "4454810a488876bc8b716e76f8be8de2",
@@ -118,6 +118,7 @@ describe("Test subscribe service", function () {
 
         // pages_show_list
         // manage pages
+        // publish_actions
 
         getPageIds(config).fork(done, (pageIds: any) => {
             expect(pageIds).to.be.not.empty;
@@ -154,7 +155,7 @@ describe("Test subscribe service", function () {
         });
     });
 
-    it.only("should add callback for page activity", (done) => {
+    it("should add callback for page activity", (done) => {
 
         const persistLongLivedAccessToken = persistLongLivedAccessTokenCurry(Task)(config);
         const getPageDetails = getUserPageDetailsCurry(config);
@@ -187,5 +188,7 @@ describe("Test subscribe service", function () {
             done();
         });
     });
+
+
 
 });

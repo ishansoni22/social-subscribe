@@ -1,7 +1,7 @@
 "use strict";
 
 
-const Task =  require("data.task");
+const Task = require("data.task");
 import * as R from "ramda";
 
 import {IConfig} from "../config/config";
@@ -24,23 +24,23 @@ export const getLongLivedAccessToken = (config: IConfig): any => {
     const options: requestOptions = {
         uri: fbLongLivedAccessTokenURI,
     };
-    return  requestService(options);
+    return requestService(options);
 };
 
 export const extractLongLivedAccessTokenFromResponse = (responseString: string): string =>
-    responseString &&  responseString.split("&")[0].split("=")[1];
+responseString && responseString.split("&")[0].split("=")[1];
 
-export const getUserPageDetails =  (config: IConfig) => (longLivedAccessToken: string):any => {
+export const getUserPageDetails = (config: IConfig) => (longLivedAccessToken: string): any => {
     const pageDetailsAndTokensURI = config.graphApiHost.concat("/me/accounts")
     const options = {
         qs: {access_token: longLivedAccessToken},
-        uri: pageDetailsAndTokensURI};
+        uri: pageDetailsAndTokensURI
+    };
     return requestService(options);
 };
 
 
-
-export const subscribePageForApp = (config: IConfig) =>  (page: any): any => {
+export const subscribePageForApp = (config: IConfig) => (page: any): any => {
     const pageSubscriptionURI = config.graphApiHost.concat("/")
         .concat(page.id)
         .concat("/subscribed_apps");
@@ -54,7 +54,7 @@ export const subscribePageForApp = (config: IConfig) =>  (page: any): any => {
     return requestService(subscribeOptions);
 };
 
-export const addWebhooksForPageActivity = (config: IConfig) => (appAccessToken: string):any =>  {
+export const addWebhooksForPageActivity = (config: IConfig) => (appAccessToken: string): any => {
     const pageActivitySubscriptionURI = config.graphApiHost.concat("/")
         .concat(config.appId)
         .concat("/subscriptions")
@@ -88,3 +88,20 @@ export const getAppAccessToken = (config: IConfig) => (): any => {
     return requestService(appAccessTokenOptions);
 };
 
+export const doFbPostOnPage = (config: IConfig) => (message: string) => (page: any) =>
+    (longLivedAccessToken: string) =>
+    {
+        const fbPostOnPageURI = config.graphApiHost.concat("/")
+            .concat(page.id)
+            .concat("/feed");
+        const fbPostOnPageOptions: requestOptions = {
+            method: "POST",
+            qs: {
+                message,
+                access_token: longLivedAccessToken,
+            },
+            uri: fbPostOnPageURI,
+        };
+        return requestService(fbPostOnPageOptions);
+
+    };

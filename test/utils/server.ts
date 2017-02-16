@@ -11,7 +11,8 @@ import * as url from "querystring";
  * @param {int} port: Port for the server to run on
  */
 export const createServer = (port: number) => (callback: Function) => {
-    const server = http.createServer(function (request, response) {
+
+    const server = http.createServer((request, response) => {
         let data = "";
 
         request.on("data", (chunk: any) => {
@@ -22,9 +23,8 @@ export const createServer = (port: number) => (callback: Function) => {
         let params: any = {};
         if (request.method === "GET") {
             params = url.parse(request.url);
+            response.end(params["hub.challenge"]);
         }
-
-        response.end(params["hub.challenge"]);
     });
 
     if (port) {
