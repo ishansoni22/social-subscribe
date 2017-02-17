@@ -88,20 +88,21 @@ export const getAppAccessToken = (config: IConfig) => (): any => {
     return requestService(appAccessTokenOptions);
 };
 
-export const doFbPostOnPage = (config: IConfig) => (message: string) => (page: any) =>
-    (longLivedAccessToken: string) =>
-    {
-        const fbPostOnPageURI = config.graphApiHost.concat("/")
-            .concat(page.id)
-            .concat("/feed");
-        const fbPostOnPageOptions: requestOptions = {
-            method: "POST",
-            qs: {
-                message,
-                access_token: longLivedAccessToken,
-            },
-            uri: fbPostOnPageURI,
-        };
-        return requestService(fbPostOnPageOptions);
+export const doFbPostOnPage = (config: IConfig) =>
+    (message: string) =>
+        (longLivedAccessToken: string) =>
+            (page: any) => {
+                const fbPostOnPageURI = config.graphApiHost.concat("/")
+                    .concat(page.id)
+                    .concat("/feed");
+                const fbPostOnPageOptions: requestOptions = {
+                    method: "POST",
+                    qs: {
+                        message,
+                        access_token: longLivedAccessToken,
+                    },
+                    uri: fbPostOnPageURI,
+                };
+                return requestService(fbPostOnPageOptions);
 
-    };
+            };

@@ -23,9 +23,9 @@ describe("Test subscribe service", function () {
     this.timeout(50000);
     let server: any;
     let tunnel: any;
-    const shortLivedAccessToken = "EAADvbGAQt94BAE0utnCYbUBgmMlqB70CTVDwp79JdLZBFSt2SzyZCPVjuPtmehGROxgY2yDig6" +
-        "6QLEZCnFY31fRp2ZAZAOPWnO9pVlTbOf8C8yuztJYeZB2EOgmZCmU3whe2w9I5c5G386ftaOwqYZBGWAeybD0kJ1iI5ZBd8ZAzucwzv" +
-        "LjarmYwGg5sxwmU2eLwgZD";
+    const shortLivedAccessToken = "EAADvbGAQt94BAG0DwTknGKAUjFMMvZCVDxBXDXPFKUdKmP2WV2ZBzX4aKLRdufPRuHqP43YovgVEeHZ" +
+        "B0fB1ZASwMmaE6cqaaCez16lwJo1ZBkKzgfCEGoPbL8JlX0IpAGSP3Qts402f5pvZC6oUlCcllG3shoOMd4kiGfHPXZCUKuSrCnnZCtviMU" +
+        "HqZChzmqmwZD";
     const config = {
         appId: "263248747214814",
         appSecret: "4454810a488876bc8b716e76f8be8de2",
@@ -67,43 +67,48 @@ describe("Test subscribe service", function () {
             expect(obj.success).to.to.be.true;
 
 
-            // const getPageDetails = getUserPageDetailsCurry(config);
-            // const doFbPostOnPage = doFbPostOnPageCurry(config)("This is a test post");
-            // const lookUpLongLivedAccessToken = lookUpLongLivedAccessTokenCurry(Task)(config);
-            //
-            //
-            // const pageIds: any = R.compose(
-            //     // R.map((pages: any) => {console.log(pages); return pages; }),
-            //     R.map(R.prop("data")),
-            //     R.chain(getPageDetails),
-            //     lookUpLongLivedAccessToken,
-            //     );
-            //
-            //
-            //
-            // const doFbPostOnPages = R.compose(
-            //
-            //     //  R.chain(R.map(pageIds)),
-            //     // R.map((...args: any[]) => console.log(args)),
-            //     R.map((args: any[]) => {console.log(args); return args; }),
-            //     R.unnest,
-            //     // R.map(R.sequence(Task.of)),
-            //     R.map(R.map(R.map(pageIds))),
-            //     lookUpLongLivedAccessToken);
-            //
-            //
-            //
-            // // pages_show_list
-            // // manage pages
-            // // publish_actions
-            //
-            // // const temp: any = doFbPostOnPages();
-            // doFbPostOnPages().fork(done, (pageIds: any) => {
-            //     expect(pageIds).to.be.not.empty;
-            //     expect(pageIds).to.be.instanceof(Array);
-            //
-            //     done();
-            // });
+            const getPageDetails = getUserPageDetailsCurry(config);
+            const doFbPostOnPage = doFbPostOnPageCurry(config)("This is a test post");
+            const lookUpLongLivedAccessToken = lookUpLongLivedAccessTokenCurry(Task)(config);
+
+
+            const pageIds: any = R.compose(
+                R.map(R.prop("data")),
+                R.chain(getPageDetails),
+                lookUpLongLivedAccessToken,
+                );
+
+
+
+            const doFbPostOnPageAccessToken = R.compose(
+                R.map(doFbPostOnPage),
+                lookUpLongLivedAccessToken);
+
+
+            const doFbPost = R.compose(
+
+                R.unnest,
+                R.map((R.sequence(Task.of))),
+                R.map(
+                    R.map(
+                        //=> pageId
+                        doFbPostOnPageAccessToken
+                    )
+                ),
+                pageIds);
+
+            // pages_show_list
+            // manage pages
+            // publish_actions
+
+            // const temp: any = doFbPost();
+            doFbPost(config).fork(done, (pageIds: any) => {
+                pageIds[0]();
+                expect(pageIds).to.be.not.empty;
+                expect(pageIds).to.be.instanceof(Array);
+
+                done();
+            });
 
         });
 
