@@ -44,6 +44,8 @@
     "gulp-tslint": "^7.1.0",
     "localtunnel": "^1.8.2",
     "mocha": "^3.0.0",
+    "mock-req": "^0.2.0",
+    "mock-res": "^0.3.3",
     "ts-node": "^1.2.2",
     "tslint": "^4.4.2",
     "typescript": "^2.0.0",

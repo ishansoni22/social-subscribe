@@ -18,9 +18,36 @@ import {
     lookUpLongLivedAccessToken as lookUpLongLivedAccessTokenCurry,
     persistLongLivedAccessToken as persistLongLivedAccessTokenCurry,
 } from "../src/services/accessTokenService";
-import {ClientResponse} from "http";
+import {emit} from "cluster";
 
 
+export interface IValue {
+    item: string;
+    sender_name: string;
+    sender_id: number;
+    post_id: string;
+    verb: string;
+    published: boolean;
+    created_time: number;
+    message: string;
+    comment_id: string,
+    parent_id: string,
+}
+export interface IChange {
+    field: string;
+    value: IValue;
+}
+export interface IEntry {
+    changes: IChange[];
+    id: string;
+    time: number;
+}
+
+export interface IActivityInfo {
+    from: number;
+    raw: IChange;
+    type: string;
+}
 export type IFork = (error: (error: Error) => void, success: (T: any) => void) => void;
 
 export interface ITask {
@@ -34,9 +61,11 @@ export class SocialSubscribe extends EventEmitter {
 
     private config: IConfig;
 
+    private actions: Map<string, string>;
+
     public constructor(config: IConfig) {
         super();
-
+        this.actions = new Map([["status", "post"]]);
         this.config = config;
 
         // @todo: Move recipe to separate repository
@@ -65,6 +94,7 @@ export class SocialSubscribe extends EventEmitter {
             R.map(R.map(subscribePageForApp)),
             pageIds);
         this.recipe = registerAppUrlForPageActivity;
+
     }
 
     public start() {
@@ -75,23 +105,52 @@ export class SocialSubscribe extends EventEmitter {
         });
     }
 
-    public apiCallback(request: IncomingMessage, response: IncomingMessage, callback: () => void) {
+    public apiCallback(request: IncomingMessage, response: IncomingMessage, callback: (data: any) => void) {
         if (request.method === "POST") {
-            let data = "";
-            const post: any = {};
+            let data: any = "";
             request.on("data", (chunk: any) => {
                 data += chunk.toString();
 
             })
             request.on("end", () => {
-                data.split("&")
-                    .forEach((values) => {
-                         post[values.split("=")[0]] = values.split("=")[1];
-                    });
+                data = JSON.parse(data);
+
+                const emitActivity = (eventEmitter: SocialSubscribe) => (change: IChange) => {
+                    const {item} = change.value;
+                    const activity: string = this.actions.has(item) && this.actions.get(item) || item;
+
+                    const activityInfo: IActivityInfo = {
+                        from: change.value.sender_id,
+                        raw: change,
+                        type: activity,
+                    };
+
+                    eventEmitter.emit(activity, activityInfo)
+                    eventEmitter.emit("activity", change);
+                };
+
+                const entryIterator = (entry: IEntry) => {
+
+                    const mergeEntryIdWithChange = (change: IChange) =>
+                        Object.assign({}, change, {id: entry.id});
+
+                    const changes = R.has("changes")(entry) ? entry.changes : [];
+
+                    const publishedChanges = changes.filter((change: IChange) =>
+                    change.value && change.value.published !== undefined && change.value.published || 1);
+
+                    return publishedChanges && R.map(mergeEntryIdWithChange, publishedChanges) || [];
+                };
+
+                const emitActivityForSocialSubScribe = emitActivity(this);
+
+                return R.has("entry")(data) ?
+                    R.forEach(R.compose(
+                        R.map(emitActivityForSocialSubScribe),
+                        entryIterator,
+                    ), data.entry) : null;
+
             });
-
-            console.log(post);
-
         }
 
     }
