@@ -1,25 +1,41 @@
-# Using this module in other modules
+# Social Subscribe
+The goal of this library is to provide an abstraction over most popular social networks for subscribing to 
+user activity.
 
-Here is a quick example of how this module can be used in other modules. The [TypeScript Module Resolution Logic](https://www.typescriptlang.org/docs/handbook/module-resolution.html) makes it quite easy. The file `src/index.ts` acts as an aggregator of all the functionality in this module. It imports from other files and re-exports to provide a unified interface for this module. The _package.json_ file contains `main` attribute that points to the generated `lib/index.js` file and `typings` attribute that points to the generated `lib/index.d.ts` file.
+In it's current state it can help to subscribe users facebook pages. It will give you an event emitter which emits events like "post", "comment" etc. with the 
+update as soon as there is any activity on pages. 
 
-> If you are planning to have code in multiple files (which is quite natural for a NodeJS module) that users can import, make sure you update `src/index.ts` file appropriately.
+## Installation
+coming up ...
 
-Now assuming you have published this amazing module to _npm_ with the name `my-amazing-lib`, and installed it in the module in which you need it -
+## How to use
+coming up ...
 
-- To use the `Greeter` class in a TypeScript file -
+Use cases
+---------
+  This can be used when application needs to get continuous updates of the user from social networks to process the 
+  update and perform certain analysis on it. 
+  
+  This library helps in quick bootstrapping of social subscription 
 
-```ts
-import { Greeter } from "my-amazing-lib";
+How it works
+------------
+coming up ...
 
-const greeter = new Greeter("World!");
-greeter.greet();
-```
+Future Plan
+------------
+Currently this library does not consider the social API call limits. We plan to add that in future as of now the API
+ limits are expected to be handled by application.
 
-- To use the `Greeter` class in a JavaScript file -
+Library has included recipe in itself. We plan to separate it so that it can grow on it's own, in areas like
+ adding more events for subscription and specialised API calls per social network. 
 
-```js
-const Greeter = require('my-amazing-lib').Greeter;
+We will also provide helper functions which will include independent API calls that we make to do subscription, along 
+ with specialised API calls per social network to ease the integration. The helper functions 
 
-const greeter = new Greeter('World!');
-greeter.greet();
-```
+## TODO
+- [ ]  Add documentation for Installation
+- [ ]  Add documentation for How to use
+- [ ]  Add documentation for How it works
+- [ ]  Create NPM package
+- [ ]  Add code coverage
