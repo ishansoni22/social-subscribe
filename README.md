@@ -6,7 +6,10 @@ In it's current state it can help to subscribe users facebook pages. It will giv
 update as soon as there is any activity on pages. 
 
 ## Installation
-coming up ...
+You can install this package from npm via following command 
+```sh
+npm install social-subscribe@alpha
+```
 
 ## How to use
 coming up ...
@@ -37,5 +40,5 @@ We will also provide helper functions which will include independent API calls t
 - [ ]  Add documentation for Installation
 - [ ]  Add documentation for How to use
 - [ ]  Add documentation for How it works
-- [ ]  Create NPM package
+- [X]  Create NPM package
 - [ ]  Add code coverage

@@ -3,7 +3,6 @@ const Task = require("data.task");
 const R = require("ramda");
 import  {EventEmitter} from "events";
 
-
 import {IConfig} from "./config/config";
 import {
     addWebhooksForPageActivity as addWebhooksForPageActivityCurry,
@@ -19,7 +18,6 @@ import {
     persistLongLivedAccessToken as persistLongLivedAccessTokenCurry,
 } from "../src/services/accessTokenService";
 import {emit} from "cluster";
-
 
 export interface IValue {
     item: string;
@@ -75,7 +73,6 @@ export class SocialSubscribe extends EventEmitter {
         const subscribePageForApp = subscribePageForAppCurry(config);
         const addWebhooksForPageActivity = addWebhooksForPageActivityCurry(config);
         const getAppAccessToken = getAppAccessTokenCurry(config);
-
 
         const pageIds: ITask = R.compose(
             R.map(R.prop("data")),

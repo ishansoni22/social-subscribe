@@ -1,8 +1,6 @@
 "use strict";
 
-
 const Task = require("data.task");
-import * as R from "ramda";
 
 import {IConfig} from "../config/config";
 
@@ -31,10 +29,10 @@ export const extractLongLivedAccessTokenFromResponse = (responseString: string):
 responseString && responseString.split("&")[0].split("=")[1];
 
 export const getUserPageDetails = (config: IConfig) => (longLivedAccessToken: string): any => {
-    const pageDetailsAndTokensURI = config.graphApiHost.concat("/me/accounts")
+    const pageDetailsAndTokensURI = config.graphApiHost.concat("/me/accounts");
     const options = {
         qs: {access_token: longLivedAccessToken},
-        uri: pageDetailsAndTokensURI
+        uri: pageDetailsAndTokensURI,
     };
     return requestService(options);
 };
