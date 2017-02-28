@@ -73,7 +73,7 @@ export interface IFbRepository extends IRepository {
 }
 
 
-export const actions = new Map([["status", "onPost"], ["comment", "onComment"]]);
+
 
 
 export const lookupAppAccessToken = (Task: any) => (config: IFbConfig): ITask =>
@@ -234,10 +234,15 @@ export const apiCallbackHandlerFn: apiCallbackHandler = (config: IFbCallbackConf
                     request.on("end", () => {
                         data = JSON.parse(data);
 
+                        const actions: Map<string, string> = new Map([
+                                ["status", "onPost"],
+                                ["post", "onPost"],
+                                ["comment", "onComment"]
+                            ]);
 
-                        const callActivity = (config: IFbCallbackConfig) => (change: IChange) => {
+                        const callActivity = (config: IFbCallbackConfig) => (actions: Map<string, string>) => (change: IChange) => {
                             const {item} = change.value;
-                            const activity: string = this.actions.has(item) && this.actions.get(item) || item;
+                            const activity: string = actions.has(item) && actions.get(item) || item;
 
                             const activityInfo: IActivityInfo = {
                                 from: change.value.sender_id,
@@ -269,7 +274,7 @@ export const apiCallbackHandlerFn: apiCallbackHandler = (config: IFbCallbackConf
                             return publishedChanges && R.map(mergeEntryIdWithChange, publishedChanges) || [];
                         };
 
-                        const emitActivityForSocialSubScribe = callActivity(config);
+                        const emitActivityForSocialSubScribe = callActivity(config)(actions);
 
                         return R.has("entry")(data) ?
                             R.forEach(R.compose(

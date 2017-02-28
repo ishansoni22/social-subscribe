@@ -23,8 +23,6 @@ export class SocialSubscribe extends EventEmitter {
 
     private config: IConfig;
 
-    private actions: Map<string, string>;
-
     public constructor(config: IConfig) {
         super();
         this.config = config;

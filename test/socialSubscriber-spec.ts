@@ -71,7 +71,7 @@ describe("Test subscribe service", function () {
         socialSubscribe.on("success", (obj: any) => {
             expect(obj).to.be.not.empty;
             expect(obj).to.haveOwnProperty("success");
-            expect(obj.success).to.to.be.true;
+            expect(obj.success).to.be.true;
             done();
 
             // const getPageDetails = getUserPageDetailsCurry(config);
@@ -123,9 +123,9 @@ describe("Test subscribe service", function () {
 
         const onPost = (activityInfo: IActivityInfo) => {
             expect(activityInfo.type).to.be.not.empty;
-            expect(activityInfo.type).to.be.equal("status");
+
             // expect(activityInfo.raw).to.be.equal(requestObj.entry[0].changes[0].value);
-            done();
+             done();
         };
 
         server.on("request",(req: IncomingMessage, res: IncomingMessage)=> {
