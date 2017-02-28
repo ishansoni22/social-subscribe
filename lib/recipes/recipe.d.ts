@@ -2,7 +2,7 @@
 import { ICallbackConfig } from "../config/config";
 import { IRecipe } from "../index";
 import { IncomingMessage } from "http";
-export declare type apiCallbackHandler = (config: ICallbackConfig) => (callback: (data: any) => void) => (request: IncomingMessage) => (response: IncomingMessage) => void;
+export declare type apiCallbackHandler = (config: ICallbackConfig) => (request: IncomingMessage) => (response: IncomingMessage) => void;
 export interface IExternalRecipe {
     recipe: IRecipe;
     apiCallbackHandlerFn: apiCallbackHandler;

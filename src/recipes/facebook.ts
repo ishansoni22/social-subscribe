@@ -223,7 +223,6 @@ export const recipe = (config: IConfig): ITask => {
 };
 
 export const apiCallbackHandlerFn: apiCallbackHandler = (config: IFbCallbackConfig) =>
-    (callback: (data: any) => void) =>
         (request: IncomingMessage) =>
             (response: IncomingMessage) => {
                 if (request.method === "POST") {

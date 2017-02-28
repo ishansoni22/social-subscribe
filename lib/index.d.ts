@@ -16,4 +16,4 @@ export declare class SocialSubscribe extends EventEmitter {
     constructor(config: IConfig);
     start(): void;
 }
-export declare const apiCallback: (request: IncomingMessage, response: IncomingMessage, callback: (data: any) => void, callbackConfig: ICallbackConfig, socialNetwork: string) => void;
+export declare const apiCallback: (request: IncomingMessage, response: IncomingMessage, callbackConfig: ICallbackConfig, socialNetwork: string) => void;

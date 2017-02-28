@@ -28,9 +28,9 @@ describe("Test subscribe service", function () {
     this.timeout(50000);
     let server: any;
     let tunnel: any;
-    const shortLivedAccessToken = "EAADvbGAQt94BAIfwVZA5m5CyoqJwkrY0en2v9pDCEhjtw5mRNpPB077kZALsIFdULWDFiS" +
-        "mco9mYHck929ZArHvP4ZAuE5wmfTbhXqcBD04BC1ZBUORgwE6wVljyk1L1vvZAuTuVThQliVQPooqPWal3BLUQ6ASgeWSF8eoNn" +
-        "gaoteGa6g34buM1q0oQQxHvQZD";
+    const shortLivedAccessToken = "EAADvbGAQt94BANBddMBFs1oqfL6tCIWCbLyYkhjPezvtHn7r6XAWkQwjKYq85wwlxHKAlik" +
+        "lmOXFre7aNAEPfwTuKa4SnKnvZBQcanaEA4j5eBeQothv5lJgrNPCz69ThxuB3djlLOjdsfwEk7NwA3RO0EovKHRWzhvbketm7ScO7" +
+        "j1TjBbbZCYxpnRI0ZD";
     const config = {
         uuid: "123456789",
         appId: "263248747214814",
@@ -129,7 +129,7 @@ describe("Test subscribe service", function () {
         };
 
         server.on("request",(req: IncomingMessage, res: IncomingMessage)=> {
-            apiCallback(req, res, () => done, {onPost}, config.socialNetwork);
+            apiCallback(req, res, {onPost}, config.socialNetwork);
         });
 
         socialSubscribe.start();
@@ -178,7 +178,7 @@ describe("Test subscribe service", function () {
         };
 
 
-        apiCallback(req, res, () => done, {onPost}, config.socialNetwork);
+        apiCallback(req, res, {onPost}, config.socialNetwork);
         const requestString = JSON.stringify(requestObj);
         req.write(new Buffer(requestString));
         req.end();
@@ -227,7 +227,7 @@ describe("Test subscribe service", function () {
         };
 
 
-        apiCallback(req, res, () => done, {onComment}, config.socialNetwork);
+        apiCallback(req, res,  {onComment}, config.socialNetwork);
         const requestString = JSON.stringify(requestObj);
         req.write(new Buffer(requestString));
         req.end();

@@ -45,10 +45,9 @@ export class SocialSubscribe extends EventEmitter {
 
 export const apiCallback = (request: IncomingMessage,
                             response: IncomingMessage,
-                            callback: (data: any) => void,
                             callbackConfig: ICallbackConfig,
                             socialNetwork: string) => {
 
     const recipeAPICallback: apiCallbackHandler = getApiCallback(socialNetwork);
-    recipeAPICallback(callbackConfig)(callback)(request)(response);
+    recipeAPICallback(callbackConfig)(request)(response);
 };

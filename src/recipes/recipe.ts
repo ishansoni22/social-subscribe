@@ -11,7 +11,6 @@ import {IncomingMessage} from "http";
 
 
 export type apiCallbackHandler = (config: ICallbackConfig) =>
-    (callback: (data: any) => void) =>
         (request: IncomingMessage) =>
             (response: IncomingMessage) => void;
 
