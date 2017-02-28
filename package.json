@@ -1,66 +1,70 @@
 {
-    "name": "social-subscribe",
-    "version": "0.0.1",
-    "description": "social-subscribe",
-    "license": "MIT",
-    "repository": "https://github.com/ishansoni22/social-subscribe",
-    "contributors": [
-        {
-            "name": "Ishan Soni"
-        },
-        {
-            "name": "Bharat Mhaskar",
-            "email": "bmhaskar@gmail.com"
-        }
-    ],
-    "keywords": [
-        "social",
-        "facebook",
-        "subscription",
-        "page",
-        "feed",
-        "API",
-        "graph"
-    ],
-    "files": [
-        "lib"
-    ],
-    "main": "lib/index.js",
-    "typings": "lib/index.d.ts",
-    "scripts": {
-        "prepublish": "gulp build",
-        "test": "gulp test",
-        "build": "gulp build",
-        "clean": "gulp clean",
-        "lint": "gulp lint",
-        "watch": "gulp watch"
+  "name": "social-subscribe",
+  "version": "0.0.1",
+  "description": "social-subscribe",
+  "license": "MIT",
+  "repository": "https://github.com/ishansoni22/social-subscribe",
+  "contributors": [
+    {
+      "name": "Ishan Soni"
     },
-    "dependencies": {
-        "data.task": "^3.1.1",
-        "ramda": "^0.23.0",
-        "request": "^2.79.0",
-        "sinon": "^1.17.7"
-    },
-    "devDependencies": {
-        "bluebird": "^3.4.7",
-        "chai": "^3.0.0",
-        "del": "^2.2.1",
-        "dotbin": "^1.0",
-        "express": "^4.14.1",
-        "gulp": "^3.9.0",
-        "gulp-help": "^1.6.0",
-        "gulp-mocha": "^3.0.0",
-        "gulp-tslint": "^7.1.0",
-        "localtunnel": "^1.8.2",
-        "mocha": "^3.0.0",
-        "mock-req": "^0.2.0",
-        "mock-res": "^0.3.3",
-        "ts-node": "^1.2.2",
-        "tslint": "^4.4.2",
-        "typescript": "^2.0.0",
-        "typings": "^2.1.0"
-    },
-    "engines": {
-        "node": ">=4.0.0"
+    {
+      "name": "Bharat Mhaskar",
+      "email": "bmhaskar@gmail.com"
     }
+  ],
+  "keywords": [
+    "social",
+    "facebook",
+    "subscription",
+    "page",
+    "feed",
+    "API",
+    "graph"
+  ],
+  "files": [
+    "lib"
+  ],
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "scripts": {
+    "prepublish": "gulp build",
+    "test": "gulp test",
+    "build": "gulp build",
+    "clean": "gulp clean",
+    "lint": "gulp lint",
+    "watch": "gulp watch"
+  },
+  "dependencies": {
+    "data.task": "^3.1.1",
+    "ramda": "^0.23.0",
+    "request": "^2.79.0",
+    "sinon": "^1.17.7"
+  },
+  "devDependencies": {
+    "@types/chai": "^3.4.35",
+    "@types/mocha": "^2.2.39",
+    "@types/node": "^7.0.5",
+    "@types/request": "0.0.40",
+    "bluebird": "^3.4.7",
+    "chai": "^3.0.0",
+    "del": "^2.2.1",
+    "dotbin": "^1.0",
+    "express": "^4.14.1",
+    "gulp": "^3.9.0",
+    "gulp-help": "^1.6.0",
+    "gulp-mocha": "^3.0.0",
+    "gulp-tslint": "^7.1.0",
+    "localtunnel": "^1.8.2",
+    "mocha": "^3.0.0",
+    "mock-req": "^0.2.0",
+    "mock-res": "^0.3.3",
+    "ts-node": "^1.2.2",
+    "tslint": "^4.4.2",
+    "typescript": "2.0.8",
+    "typings": "^2.1.0"
+  },
+  "engines": {
+    "node": ">=4.0.0"
+  }
 }

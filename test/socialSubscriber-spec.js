@@ -1,79 +1,68 @@
-import {IActivityInfo} from "../src/recipes/facebook";
-const MockReq: any = require('mock-req');
-const MockRes: any = require('mock-res');
-
-const Promise: any = require("bluebird");
-import * as chai from "chai";
-const R = require("ramda");
-const Task = require("data.task");
-const localtunnel = require('localtunnel');
-
-import {repository} from "./utils/repository";
-import {createServer as createServerCurry} from "./utils/server";
+"use strict";
+var MockReq = require('mock-req');
+var MockRes = require('mock-res');
+var Promise = require("bluebird");
+var chai = require("chai");
+var R = require("ramda");
+var Task = require("data.task");
+var localtunnel = require('localtunnel');
+var repository_1 = require("./utils/repository");
+var server_1 = require("./utils/server");
 // import {
 //     lookUpLongLivedAccessToken as lookUpLongLivedAccessTokenCurry,
 // } from "../src/services/accessTokenService";
-import {SocialSubscribe, apiCallback} from "../src/index";
-import {IncomingMessage} from "http";
+var index_1 = require("../src/index");
 // import {
 //     getUserPageDetails as getUserPageDetailsCurry,
 //     doFbPostOnPage as doFbPostOnPageCurry,
 // } from "../src/services/subscribeService";
-
-const localServerPort = 3050;
-const createServer = createServerCurry(localServerPort);
-const expect = chai.expect;
-
+var localServerPort = 3050;
+var createServer = server_1.createServer(localServerPort);
+var expect = chai.expect;
 describe("Test subscribe service", function () {
     this.timeout(50000);
-    let server: any;
-    let tunnel: any;
-    const shortLivedAccessToken = "EAADvbGAQt94BAIfwVZA5m5CyoqJwkrY0en2v9pDCEhjtw5mRNpPB077kZALsIFdULWDFiS" +
-        "mco9mYHck929ZArHvP4ZAuE5wmfTbhXqcBD04BC1ZBUORgwE6wVljyk1L1vvZAuTuVThQliVQPooqPWal3BLUQ6ASgeWSF8eoNn" +
-        "gaoteGa6g34buM1q0oQQxHvQZD";
-    const config = {
-        uuid: "123456789",
+    var server;
+    var tunnel;
+    var shortLivedAccessToken = "EAADvbGAQt94BAA0bov0DedHXaprT9pqKXgx6oiHnv0OIouBemtLLRb06WSBiLLPouO7BtOfgTZC30" +
+        "BUU0ZCzhqf8qNwj5cqtDceictPw6Vr8n8LOCKUBpl6LDkJ1aLB7YCtTH6MsVMu0Npy3IwYJk1b75WQnulo1ivOC11ZAxX9ZC5WYo62MgSh" +
+        "W2F0HRZAMZD";
+    var config = {
+        "uuid": "123456789",
         appId: "263248747214814",
         appSecret: "4454810a488876bc8b716e76f8be8de2",
         callBackURL: "http://localhost:3050",
         graphApiHost: "https://graph.facebook.com",
-        repository,
-        shortLivedAccessToken,
+        repository: repository_1.repository,
+        shortLivedAccessToken: shortLivedAccessToken,
         socialNetwork: "facebook",
     };
-
-    before((done) => {
-        server = createServer((err: Error) => {
+    before(function (done) {
+        server = createServer(function (err) {
             if (err) {
                 done(err);
             }
-            tunnel = localtunnel(localServerPort, (error: Error, newTunnel: any) => {
+            tunnel = localtunnel(localServerPort, function (error, newTunnel) {
                 if (error) {
                     done(error);
                 }
                 config.callBackURL = newTunnel.url;
                 done();
             });
-
         });
-
     });
-
-    after((done) => {
-        tunnel.on("close", () => {
-            server.close(() => done());
+    after(function (done) {
+        tunnel.on("close", function () {
+            server.close(function () { return done(); });
         });
         tunnel.close();
     });
-
-    it.only("should subscribe to the facebook pages", (done) => {
-        const socialSubscribe = new SocialSubscribe(config);
-        socialSubscribe.on("success", (obj: any) => {
+    it("should subscribe to the facebook pages", function (done) {
+        var socialSubscribe = new index_1.SocialSubscribe(config);
+        socialSubscribe.on("success", function (obj) {
             expect(obj).to.be.not.empty;
             expect(obj).to.haveOwnProperty("success");
             expect(obj.success).to.to.be.true;
             done();
-
             // const getPageDetails = getUserPageDetailsCurry(config);
             // const doFbPostOnPage = doFbPostOnPageCurry(config)("This is a test post");
             // const lookUpLongLivedAccessToken = lookUpLongLivedAccessTokenCurry(Task)(config);
@@ -103,11 +92,9 @@ describe("Test subscribe service", function () {
             //         )
             //     ),
             //     pageIds);
-
             // pages_show_list
             // manage pages
             // publish_actions
-
             // const temp: any = doFbPost();
             // doFbPost(config).fork(done, (pageIds: any) => {
             //     pageIds[0]();
@@ -116,85 +103,62 @@ describe("Test subscribe service", function () {
             //
             //     done();
             // });
-
         });
-
         socialSubscribe.on("error", done);
-
-        const onPost = (activityInfo: IActivityInfo) => {
-            expect(activityInfo.type).to.be.not.empty;
-            expect(activityInfo.type).to.be.equal("status");
-            // expect(activityInfo.raw).to.be.equal(requestObj.entry[0].changes[0].value);
-            done();
-        };
-
-        server.on("request",(req: IncomingMessage, res: IncomingMessage)=> {
-            apiCallback(req, res, () => done, {onPost}, config.socialNetwork);
-        });
-
+        server.on("request", index_1.apiCallback);
         socialSubscribe.start();
-
     });
-
-    it("should emit proper events for post", (done) => {
-
-        const res = new MockRes(function () {
+    it("should emit proper events for post", function (done) {
+        var res = new MockRes(function () {
             console.log('Response finished');
         });
-        const req = new MockReq({
+        var req = new MockReq({
             method: "POST",
         });
-
-        const requestObj = {
+        var requestObj = {
             entry: [
                 {
                     changes: [
                         {
                             field: "feed",
                             value: {
-                                item: "status",
-                                sender_name: "JS Artist",
+                                comment_id: "266831690420445_268791033557844",
+                                created_time: 1487572270,
+                                item: "comment",
+                                message: "#newcomment fresh comment",
+                                parent_id: "265660650537549_266831690420445",
+                                post_id: "265660650537549_266831690420445",
                                 sender_id: 265660650537549,
-                                post_id: "265660650537549_268789846891296",
+                                sender_name: "JS Artist",
                                 verb: "add",
-                                published: 1,
-                                created_time: 1487572043,
-                                message: "Good Morning!!!"
-                            }
-                        }
+                            },
+                        },
                     ],
                     id: "265660650537549",
-                    time: 1487572044
-                }
+                    time: 1487572270,
+                },
             ],
-
             object: "page",
         };
-        const onPost = (activityInfo: IActivityInfo) => {
+        var onPost = function (activityInfo) {
             expect(activityInfo.type).to.be.not.empty;
-            expect(activityInfo.type).to.be.equal("status");
-            // expect(activityInfo.raw).to.be.equal(requestObj.entry[0].changes[0].value);
+            expect(activityInfo.type).to.be.equal("post");
+            expect(activityInfo.raw).to.be.equal(requestObj.entry[0].changes[0].value);
             done();
         };
-
-
-        apiCallback(req, res, () => done, {onPost}, config.socialNetwork);
-        const requestString = JSON.stringify(requestObj);
+        index_1.apiCallback(req, res, function () { return done; }, { onPost: onPost }, config.socialNetwork);
+        var requestString = JSON.stringify(requestObj);
         req.write(new Buffer(requestString));
         req.end();
     });
-
-    it("should emit proper events for comment", (done) => {
-
-
-        const res = new MockRes(function () {
+    it.only("should emit proper events for comment", function (done) {
+        var res = new MockRes(function () {
             console.log('Response finished');
         });
-        const req = new MockReq({
+        var req = new MockReq({
             method: "POST",
         });
-
-        const requestObj = {
+        var requestObj = {
             entry: [
                 {
                     changes: [
@@ -219,18 +183,15 @@ describe("Test subscribe service", function () {
             ],
             object: "page"
         };
-        const onComment = (activityInfo: IActivityInfo) => {
+        var onComment = function (activityInfo) {
             expect(activityInfo.type).to.be.not.empty;
             expect(activityInfo.type).to.be.equal("comment");
             // expect(activityInfo.raw).to.be.equal(requestObj.entry[0].changes[0].value);
             done();
         };
-
-
-        apiCallback(req, res, () => done, {onComment}, config.socialNetwork);
-        const requestString = JSON.stringify(requestObj);
+        index_1.apiCallback(req, res, function () { return done; }, { onComment: onComment }, config.socialNetwork);
+        var requestString = JSON.stringify(requestObj);
         req.write(new Buffer(requestString));
         req.end();
     });
-
 });

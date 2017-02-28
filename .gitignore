@@ -43,4 +43,7 @@ jspm_packages
 .idea/
 
 #compiled code
+src/**/*.js
+
+
 

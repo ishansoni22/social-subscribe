@@ -1,7 +1,8 @@
 "use strict";
 
 import * as rq from "request";
-import R = require("ramda")
+const R = require("ramda");
+
 
 export const requestService = (Task: any) => (options: rq.Options) => {
 
