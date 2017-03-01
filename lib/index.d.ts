@@ -3,6 +3,8 @@ import { IncomingMessage } from "http";
 import { EventEmitter } from "events";
 import { IConfig, ICallbackConfig } from "./config/config";
 import { apiCallbackHandler } from "./recipes/recipe";
+import * as helper from "./recipes";
+export declare const socialSubscribeHelpers: typeof helper;
 export declare type IFork = (error: (error: Error) => void, success: (T: any) => void) => void;
 export { IConfig, ICallbackConfig, apiCallbackHandler };
 export interface ITask {
