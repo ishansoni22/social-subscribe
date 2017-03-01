@@ -288,17 +288,17 @@ export const apiCallbackHandlerFn: apiCallbackHandler = (config: IFbCallbackConf
                             const extractDataFromRequest =
                                 (request: IncomingMessage, callback: (data: any) => void) => () => {
 
-                                let data: string = "";
-                                request.on("data", (chunk: any) => {
-                                    data += chunk.toString();
+                                    let data: string = "";
+                                    request.on("data", (chunk: any) => {
+                                        data += chunk.toString();
 
-                                });
-                                request.on("end", () => {
+                                    });
+                                    request.on("end", () => {
 
-                                    callback(JSON.parse(data))
-                                });
-                                return;
-                            };
+                                        callback(JSON.parse(data))
+                                    });
+                                    return;
+                                };
 
                             return R.ifElse(R.has("entry"),
                                 emitActivityForSocialSubScribeWithConfig,
@@ -313,5 +313,25 @@ export const apiCallbackHandlerFn: apiCallbackHandler = (config: IFbCallbackConf
             return executeWhenMethodIsPost(request);
 
         };
+
+export const publishComment = (graphApiHost: string) =>
+    (accessToken: string) =>
+        (objectId: string) =>
+            (message: string) => {
+                const publishCommentURI = graphApiHost.concat("/")
+                    .concat(objectId)
+                    .concat("/comments");
+                const subscribeOptions: requestOptions = {
+                    method: "POST",
+                    qs: {
+                        access_token: accessToken,
+                    },
+                    form: {
+                        message
+                    },
+                    uri: publishCommentURI,
+                };
+                return requestService(subscribeOptions);
+            };
 
 export const name = "facebook";

@@ -1,25 +1,17 @@
-import {IActivityInfo} from "../src/recipes/facebook";
 
 const MockReq: any = require('mock-req');
 const MockRes: any = require('mock-res');
 
-const Promise: any = require("bluebird");
+
 import * as chai from "chai";
-const R = require("ramda");
-const Task = require("data.task");
+import {IActivityInfo} from "../src/recipes/facebook";
 const localtunnel = require('localtunnel');
 
 import {repository} from "./utils/repository";
 import {createServer as createServerCurry} from "./utils/server";
-// import {
-//     lookUpLongLivedAccessToken as lookUpLongLivedAccessTokenCurry,
-// } from "../src/services/accessTokenService";
 import {SocialSubscribe, apiCallback} from "../src/index";
 import {IncomingMessage} from "http";
-// import {
-//     getUserPageDetails as getUserPageDetailsCurry,
-//     doFbPostOnPage as doFbPostOnPageCurry,
-// } from "../src/services/subscribeService";
+
 
 const localServerPort = 3050;
 const createServer = createServerCurry(localServerPort);
