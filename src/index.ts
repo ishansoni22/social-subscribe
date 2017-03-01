@@ -7,9 +7,9 @@ import {IConfig, ICallbackConfig} from "./config/config";
 
 import {getRecipe, getApiCallback, apiCallbackHandler} from "./recipes/recipe";
 
-import * as helper from "./recipes";
+import * as helpers from "./recipes/index";
 
-export const socialSubscribeHelpers = helper;
+export const socialSubscribeHelpers = helpers;
 
 export type IFork = (error: (error: Error) => void, success: (T: any) => void) => void;
 
