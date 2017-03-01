@@ -73,9 +73,6 @@ export interface IFbRepository extends IRepository {
 }
 
 
-
-
-
 export const lookupAppAccessToken = (Task: any) => (config: IFbConfig): ITask =>
     new Task((reject: any, resolve: any) => {
         config.repository.getAppAccessToken(config.appId).then(resolve, reject);
@@ -100,7 +97,7 @@ export const persistAppAccessToken = (Task: any) => (config: IFbConfig) => (appA
     });
 
 
-export const lookupPages = (Task: any) => (config: IFbConfig) => ():PromiseLike<Array<IPage>> =>
+export const lookupPages = (Task: any) => (config: IFbConfig) => (): PromiseLike<Array<IPage>> =>
     new Task((reject: any, resolve: any) => {
         config.repository.getPages(config.uuid).then(resolve, reject);
     })
@@ -222,68 +219,99 @@ export const recipe = (config: IConfig): ITask => {
 
 };
 
+
 export const apiCallbackHandlerFn: apiCallbackHandler = (config: IFbCallbackConfig) =>
-        (request: IncomingMessage) =>
-            (response: IncomingMessage) => {
-                if (request.method === "POST") {
-                    let data: any = "";
-                    request.on("data", (chunk: any) => {
-                        data += chunk.toString();
+    (request: IncomingMessage) =>
+        (response: IncomingMessage) => {
 
-                    });
-                    request.on("end", () => {
-                        data = JSON.parse(data);
 
-                        const actions: Map<string, string> = new Map([
-                                ["status", "onPost"],
-                                ["post", "onPost"],
-                                ["comment", "onComment"]
-                            ]);
+            const processPostRequest =
+                (config: IFbCallbackConfig) =>
+                    (response: IncomingMessage) =>
+                        (request: IncomingMessage) => {
 
-                        const callActivity = (config: IFbCallbackConfig) => (actions: Map<string, string>) => (change: IChange) => {
-                            const {item} = change.value;
-                            const activity: string = actions.has(item) && actions.get(item) || item;
+                            const emitActivityForSocialSubScribe = (config: IFbCallbackConfig) => (data: any) => {
+                                const actions: Map<string, string> = new Map([
+                                    ["status", "onPost"],
+                                    ["post", "onPost"],
+                                    ["comment", "onComment"]
+                                ]);
 
-                            const activityInfo: IActivityInfo = {
-                                from: change.value.sender_id,
-                                raw: change,
-                                type: item,
+                                const callActivity = (config: IFbCallbackConfig) => (actions: Map<string, string>) =>
+                                    (change: IChange) => {
+                                        const {item} = change.value;
+                                        const activity: string = actions.has(item) && actions.get(item) || item;
+
+                                        const activityInfo: IActivityInfo = {
+                                            from: change.value.sender_id,
+                                            raw: change,
+                                            type: item,
+                                        };
+
+                                        const configHas = R.has(R.__, config);
+                                        const configProp = R.prop(R.__, config);
+                                        const callAction = R.when(configHas, R.compose(
+                                            (activity: (activityInfo: IActivityInfo) => void) =>
+                                                R.call(activity, activityInfo),
+                                            configProp,
+                                        ));
+
+                                        callAction(activity);
+                                    };
+
+                                const entryIterator = (entry: IEntry) => {
+
+                                    const mergeEntryIdWithChange = (change: IChange) =>
+                                        Object.assign({}, change, {id: entry.id});
+
+                                    const changes = R.has("changes")(entry) ? entry.changes : [];
+
+                                    const publishedChanges = changes.filter((change: IChange) =>
+                                    change.value && change.value.published !== undefined && change.value.published || 1);
+
+                                    return publishedChanges && R.map(mergeEntryIdWithChange, publishedChanges) || [];
+                                };
+
+                                const emitActivityForSocialSubScribe = callActivity(config)(actions);
+
+                                return R.has("entry")(data) ?
+                                    R.forEach(R.compose(
+                                        R.map(emitActivityForSocialSubScribe),
+                                        entryIterator,
+                                    ), data.entry) : null;
+                            }
+
+                            const emitActivityForSocialSubScribeWithConfig = emitActivityForSocialSubScribe(config);
+
+                            const body = R.prop("body", request) || {};
+
+                            const extractDataFromRequest =
+                                (request: IncomingMessage, callback: (data: any) => void) => () => {
+
+                                let data: string = "";
+                                request.on("data", (chunk: any) => {
+                                    data += chunk.toString();
+
+                                });
+                                request.on("end", () => {
+
+                                    callback(JSON.parse(data))
+                                });
+                                return;
                             };
 
-                            const configHas = R.has(R.__, config);
-                            const configProp = R.prop(R.__, config);
-                            const callAction = R.when(configHas, R.compose(
-                                (activity: (activityInfo: IActivityInfo) => void) =>
-                                    R.call(activity, activityInfo),
-                                configProp,
-                            ));
+                            return R.ifElse(R.has("entry"),
+                                emitActivityForSocialSubScribeWithConfig,
+                                extractDataFromRequest(request, emitActivityForSocialSubScribeWithConfig))(body);
 
-                            callAction(activity);
                         };
 
-                        const entryIterator = (entry: IEntry) => {
+            const executeWhenMethodIsPost = R.when(R.propEq('method', 'POST'),
+                processPostRequest(config)(response)
+            );
 
-                            const mergeEntryIdWithChange = (change: IChange) =>
-                                Object.assign({}, change, {id: entry.id});
+            return executeWhenMethodIsPost(request);
 
-                            const changes = R.has("changes")(entry) ? entry.changes : [];
-
-                            const publishedChanges = changes.filter((change: IChange) =>
-                            change.value && change.value.published !== undefined && change.value.published || 1);
-
-                            return publishedChanges && R.map(mergeEntryIdWithChange, publishedChanges) || [];
-                        };
-
-                        const emitActivityForSocialSubScribe = callActivity(config)(actions);
-
-                        return R.has("entry")(data) ?
-                            R.forEach(R.compose(
-                                R.map(emitActivityForSocialSubScribe),
-                                entryIterator,
-                            ), data.entry) : null;
-
-                    });
-                }
-            };
+        };
 
 export const name = "facebook";

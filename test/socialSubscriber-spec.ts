@@ -1,4 +1,5 @@
 import {IActivityInfo} from "../src/recipes/facebook";
+
 const MockReq: any = require('mock-req');
 const MockRes: any = require('mock-res');
 
@@ -66,7 +67,7 @@ describe("Test subscribe service", function () {
         tunnel.close();
     });
 
-    it.only("should subscribe to the facebook pages", (done) => {
+    it("should subscribe to the facebook pages", (done) => {
         const socialSubscribe = new SocialSubscribe(config);
         socialSubscribe.on("success", (obj: any) => {
             expect(obj).to.be.not.empty;
@@ -185,6 +186,55 @@ describe("Test subscribe service", function () {
     });
 
     it("should emit proper events for comment", (done) => {
+
+
+        const res = new MockRes(function () {
+            console.log('Response finished');
+        });
+        const req = new MockReq({
+            method: "POST",
+        });
+
+        const requestObj = {
+            entry: [
+                {
+                    changes: [
+                        {
+                            field: "feed",
+                            value: {
+                                comment_id: "266831690420445_268791033557844",
+                                created_time: 1487572270,
+                                item: "comment",
+                                message: "#newcomment fresh comment",
+                                parent_id: "265660650537549_266831690420445",
+                                post_id: "265660650537549_266831690420445",
+                                sender_id: 265660650537549,
+                                sender_name: "JS Artist",
+                                verb: "add",
+                            }
+                        }
+                    ],
+                    id: "265660650537549",
+                    time: 1487572270
+                }
+            ],
+            object: "page"
+        };
+        const onComment = (activityInfo: IActivityInfo) => {
+            expect(activityInfo.type).to.be.not.empty;
+            expect(activityInfo.type).to.be.equal("comment");
+            // expect(activityInfo.raw).to.be.equal(requestObj.entry[0].changes[0].value);
+            done();
+        };
+
+
+        apiCallback(req, res,  {onComment}, config.socialNetwork);
+        const requestString = JSON.stringify(requestObj);
+        req.write(new Buffer(requestString));
+        req.end();
+    });
+
+    it.only("should emit proper events for comment", (done) => {
 
 
         const res = new MockRes(function () {
