@@ -50,7 +50,6 @@ export interface IFbRepository extends IRepository {
     setPages(uuid: string, pages: Array<IPage>): PromiseLike<boolean>;
     getPages(uuid: string): PromiseLike<Array<IPage>>;
 }
-export declare const actions: Map<string, string>;
 export declare const lookupAppAccessToken: (Task: any) => (config: IFbConfig) => ITask;
 export declare const lookUpLongLivedAccessToken: (Task: any) => (config: IFbConfig) => () => any;
 export declare const persistLongLivedAccessToken: (Task: any) => (config: IFbConfig) => any;

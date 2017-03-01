@@ -12,7 +12,6 @@ export declare type IRecipe = (config: IConfig) => ITask;
 export declare class SocialSubscribe extends EventEmitter {
     private recipe;
     private config;
-    private actions;
     constructor(config: IConfig);
     start(): void;
 }
