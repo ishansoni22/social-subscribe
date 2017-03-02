@@ -7,9 +7,8 @@ const expect = chai.expect;
 
 describe("Fecebook helper", function(){
     this.timeout(80000);
-    const accessToken = "EAADvbGAQt94BADNudSJSk7XwlE8WEKLo8Pw32f6GtRZCDK3X7kllKXT4fiXVnTmEdVKRi7ecAA4yZCzNpKk" +
-        "YLrzBrOOzRfxDIXcv8t6Od9NYuBh952UkjKCVZBa0XezQkYsIX1mmP7Y7IO35JSpYMqZBZBZCUR2IMJuZAys5cZCg3MqZAZB3C4B" +
-        "T3ZBbH9TxAFYkdgZD";
+    const accessToken = "EAADvbGAQt94BAAiHuOpqjnLCIMA6CqRlqQackmdAmMvkd7LngYMpN8oybY7hSPFMrlweIXYatkzpq7li2TgpBugYedB" +
+        "nyO3QuCKc9zwTFf0aY1dlb6xnIdbXwEC5QASx9JfhM9HyQBXMlOvo2Ilgy9mCDU6YZCrQ9cZAsXRM89ThqmsEJNq9MJB8f8ZAnMZD";
     const graphApiHost = "https://graph.facebook.com";
 
 
@@ -26,4 +25,4 @@ describe("Fecebook helper", function(){
             done();
         });
     });
-})
+});

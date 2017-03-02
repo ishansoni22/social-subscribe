@@ -109,8 +109,14 @@ export const persistPages = (Task: any) => (config: IFbConfig) => (pages: Array<
 export const extractLongLivedAccessTokenFromResponse = (responseString: string): string =>
 responseString && responseString.split("&")[0].split("=")[1];
 
+export interface IRequestLongLivedAccessTokenConfig {
+    graphApiHost: string;
+    appId: string;
+    appSecret: string
+    shortLivedAccessToken: string;
+}
 
-export const getLongLivedAccessToken = (config: IConfig): any => {
+export const getLongLivedAccessTokenFromShotLivedToken =  (config: IRequestLongLivedAccessTokenConfig) => {
     const fbLongLivedAccessTokenURI = config.graphApiHost
         .concat("/oauth/access_token?grant_type=fb_exchange_token&client_id=")
         .concat(config.appId)
@@ -123,6 +129,12 @@ export const getLongLivedAccessToken = (config: IConfig): any => {
         uri: fbLongLivedAccessTokenURI,
     };
     return requestService(options);
+};
+
+export const getLongLivedAccessToken = (config: IConfig): any => {
+    const {graphApiHost, appId, appSecret,shortLivedAccessToken} = config;
+    const requestLongLivedAccessTokenConfig = {graphApiHost, appId, appSecret,shortLivedAccessToken};
+    return getLongLivedAccessTokenFromShotLivedToken(requestLongLivedAccessTokenConfig)
 };
 
 

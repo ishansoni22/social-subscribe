@@ -57,6 +57,13 @@ export declare const persistAppAccessToken: (Task: any) => (config: IFbConfig) =
 export declare const lookupPages: (Task: any) => (config: IFbConfig) => () => PromiseLike<IPage[]>;
 export declare const persistPages: (Task: any) => (config: IFbConfig) => (pages: IPage[]) => any;
 export declare const extractLongLivedAccessTokenFromResponse: (responseString: string) => string;
+export interface IRequestLongLivedAccessTokenConfig {
+    graphApiHost: string;
+    appId: string;
+    appSecret: string;
+    shortLivedAccessToken: string;
+}
+export declare const getLongLivedAccessTokenFromShotLivedToken: (config: IRequestLongLivedAccessTokenConfig) => any;
 export declare const getLongLivedAccessToken: (config: IConfig) => any;
 export declare const getUserPageDetails: (config: IConfig) => (longLivedAccessToken: string) => any;
 export declare const subscribePageForApp: (config: IConfig) => (page: IPage) => any;

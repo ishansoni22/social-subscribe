@@ -21,9 +21,9 @@ describe("Test subscribe service", function () {
     this.timeout(50000);
     let server: any;
     let tunnel: any;
-    const shortLivedAccessToken = "EAADvbGAQt94BANBddMBFs1oqfL6tCIWCbLyYkhjPezvtHn7r6XAWkQwjKYq85wwlxHKAlik" +
-        "lmOXFre7aNAEPfwTuKa4SnKnvZBQcanaEA4j5eBeQothv5lJgrNPCz69ThxuB3djlLOjdsfwEk7NwA3RO0EovKHRWzhvbketm7ScO7" +
-        "j1TjBbbZCYxpnRI0ZD";
+    const shortLivedAccessToken = "EAADvbGAQt94BAAiHuOpqjnLCIMA6CqRlqQackmdAmMvkd7LngYMpN8oybY7hSPFMrlw" +
+        "eIXYatkzpq7li2TgpBugYedBnyO3QuCKc9zwTFf0aY1dlb6xnIdbXwEC5QASx9JfhM9HyQBXMlOvo2Ilgy9mCDU6YZCrQ9cZAs" +
+        "XRM89ThqmsEJNq9MJB8f8ZAnMZD";
     const config = {
         uuid: "123456789",
         appId: "263248747214814",
@@ -226,7 +226,7 @@ describe("Test subscribe service", function () {
         req.end();
     });
 
-    it.only("should emit proper events for comment", (done) => {
+    it("should emit proper events for comment", (done) => {
 
 
         const res = new MockRes(function () {
