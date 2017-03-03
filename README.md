@@ -102,7 +102,7 @@ export interface IFbCallbackConfig extends ICallbackConfig {
     onComment?: (activityInfo: IActivityInfo) => void;
     onPost?: (activityInfo: IActivityInfo) => void;
     onActivity?: (activityInfo: IActivityInfo) => void;
-    filter?: (activityInfo: IActivityInfo) => void;
+    filter?: (activityInfo: IActivityInfo) => boolean;
 }
 ```
 
@@ -110,6 +110,10 @@ This way `apiCallback` will be executing your `onComment` function whenever thei
  it has subscribed. Also the `callback` function passed before request will be called once the `activity` i.e. onComment
   is called. This can be used to call `next` in case of express server or do the next processing. 
 
+`filter` Above is used to ignore those activities which you might not be intrested in 
+e.g. replies on comment while reacting to all the comments on a post
+
+The example for same is shown in [tests] (../blob/master/test/socialSubscriber-spec.ts#L62) 
 Use cases
 ---------
   This can be used when application needs to get continuous updates of the user from social networks to process the 

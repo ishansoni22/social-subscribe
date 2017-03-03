@@ -41,7 +41,7 @@ export interface IFbCallbackConfig extends ICallbackConfig {
     onComment?: (activityInfo: IActivityInfo) => void;
     onPost?: (activityInfo: IActivityInfo) => void;
     onActivity?: (activityInfo: IActivityInfo) => void;
-    filter?: (activityInfo: IActivityInfo) => void;
+    filter?: (activityInfo: IActivityInfo) => boolean;
 }
 export interface IFbRepository extends IRepository {
     getLongLivedAccessToken(uuid: string): PromiseLike<string>;
