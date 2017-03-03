@@ -110,7 +110,7 @@ This way `apiCallback` will be executing your `onComment` function whenever thei
  it has subscribed. Also the `callback` function passed before request will be called once the `activity` i.e. onComment
   is called. This can be used to call `next` in case of express server or do the next processing. 
 
-`filter` Above is used to ignore those activities which you might not be intrested in 
+`filter` Above is used to ignore those activities which you might not be interested in. 
 e.g. replies on comment while reacting to all the comments on a post
 
 The example for same is shown in [tests] (../blob/master/test/socialSubscriber-spec.ts#L62) 
