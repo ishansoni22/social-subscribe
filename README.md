@@ -113,7 +113,9 @@ This way `apiCallback` will be executing your `onComment` function whenever thei
 `filter` Above is used to ignore those activities which you might not be interested in. 
 e.g. replies on comment while reacting to all the comments on a post
 
-The example for same is shown in [tests] (../blob/master/test/socialSubscriber-spec.ts#L62) 
+The example for same is shown in [tests] (../master/test/socialSubscriber-spec.ts#L62)
+ 
+ 
 Use cases
 ---------
   This can be used when application needs to get continuous updates of the user from social networks to process the 
