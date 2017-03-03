@@ -11,8 +11,8 @@ import {IncomingMessage} from "http";
 
 
 export type apiCallbackHandler = (config: ICallbackConfig) =>
-    (request: IncomingMessage) =>
-        (response: IncomingMessage) => void;
+    (callback: (data: any) => void) => (request: IncomingMessage) => void
+
 
 export interface IExternalRecipe {
     name: string,

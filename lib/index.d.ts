@@ -1,5 +1,4 @@
 /// <reference types="node" />
-import { IncomingMessage } from "http";
 import { EventEmitter } from "events";
 import { IConfig, ICallbackConfig } from "./config/config";
 import { apiCallbackHandler } from "./recipes/recipe";
@@ -17,4 +16,4 @@ export declare class SocialSubscribe extends EventEmitter {
     constructor(config: IConfig);
     start(): void;
 }
-export declare const apiCallback: (request: IncomingMessage, response: IncomingMessage, callbackConfig: ICallbackConfig, socialNetwork: string) => void;
+export declare const apiCallback: (socialNetwork: string) => apiCallbackHandler;

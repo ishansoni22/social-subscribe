@@ -122,7 +122,7 @@ describe("Test subscribe service", function () {
         };
 
         server.on("request",(req: IncomingMessage, res: IncomingMessage)=> {
-            apiCallback(req, res, {onPost}, config.socialNetwork);
+            apiCallback(config.socialNetwork)({onPost})((args: any) => console.log(args))(req);
         });
 
         socialSubscribe.start();
@@ -171,7 +171,7 @@ describe("Test subscribe service", function () {
         };
 
 
-        apiCallback(req, res, {onPost}, config.socialNetwork);
+        apiCallback( config.socialNetwork) ({onPost}) (() => done())(req);
         const requestString = JSON.stringify(requestObj);
         req.write(new Buffer(requestString));
         req.end();
@@ -220,13 +220,13 @@ describe("Test subscribe service", function () {
         };
 
 
-        apiCallback(req, res,  {onComment}, config.socialNetwork);
+        apiCallback(config.socialNetwork)({onComment})(() => {})(req);
         const requestString = JSON.stringify(requestObj);
         req.write(new Buffer(requestString));
         req.end();
     });
 
-    it("should emit proper events for comment", (done) => {
+    it("should emit proper events for comment with filter", (done) => {
 
 
         const res = new MockRes(function () {
@@ -264,15 +264,85 @@ describe("Test subscribe service", function () {
         const onComment = (activityInfo: IActivityInfo) => {
             expect(activityInfo.type).to.be.not.empty;
             expect(activityInfo.type).to.be.equal("comment");
-            // expect(activityInfo.raw).to.be.equal(requestObj.entry[0].changes[0].value);
-            done();
+
         };
 
+        const filter = (activityInfo: IActivityInfo) => {
+           return true;
+        };
 
-        apiCallback(req, res,  {onComment}, config.socialNetwork);
+        apiCallback(config.socialNetwork) ({onComment, filter})(() => {})(req);
         const requestString = JSON.stringify(requestObj);
         req.write(new Buffer(requestString));
         req.end();
+
+
+        const newReq = new MockReq({
+            method: "POST",
+        });
+        const onCommentNext = (activityInfo: IActivityInfo) => {
+            const error = new Error("onComment should not be called");
+            done(error);
+        };
+        apiCallback(config.socialNetwork)({onComment:onCommentNext, filter: () => false})(() => {
+            done()
+        })(newReq);
+
+        newReq.write(new Buffer(requestString));
+        newReq.end();
+
+
     });
 
+    it.only("should emit proper events for comment with express like request", (done) => {
+        const res = new MockRes(function () {
+            console.log('Response finished');
+        });
+        const req = new MockReq({
+            method: "POST",
+        });
+
+        const requestObj = {
+            entry: [
+                {
+                    changes: [
+                        {
+                            field: "feed",
+                            value: {
+                                comment_id: "266831690420445_268791033557844",
+                                created_time: 1487572270,
+                                item: "comment",
+                                message: "#newcomment fresh comment",
+                                parent_id: "265660650537549_266831690420445",
+                                post_id: "265660650537549_266831690420445",
+                                sender_id: 265660650537549,
+                                sender_name: "JS Artist",
+                                verb: "add",
+                            }
+                        }
+                    ],
+                    id: "265660650537549",
+                    time: 1487572270
+                }
+            ],
+            object: "page"
+        };
+        const onComment = (activityInfo: IActivityInfo) => {
+            expect(activityInfo.type).to.be.not.empty;
+            expect(activityInfo.type).to.be.equal("comment");
+
+        };
+
+        const filter = (activityInfo: IActivityInfo) => {
+            return true;
+        };
+        req.body = requestObj;
+
+        apiCallback(config.socialNetwork) ({onComment, filter})(() => done())(req);
+        // const requestString = JSON.stringify(requestObj);
+
+        // req.write(new Buffer(requestString));
+        req.end();
+
+    })
 });
