@@ -233,92 +233,92 @@ export const recipe = (config: IConfig): ITask => {
 
 
 export const apiCallbackHandlerFn: apiCallbackHandler = (config: IFbCallbackConfig) =>
-    (callback: (data: any) => void)  => {
+    (callback: (data: any) => void) => {
 
-    const actions: Map<string, string> = new Map([
-        ["status", "onPost"],
-        ["post", "onPost"],
-        ["comment", "onComment"]
-    ]);
+        const actions: Map<string, string> = new Map([
+            ["status", "onPost"],
+            ["post", "onPost"],
+            ["comment", "onComment"]
+        ]);
 
-    const configHas = R.has(R.__, config);
-    const configProp = R.prop(R.__, config);
+        const configHas = R.has(R.__, config);
+        const configProp = R.prop(R.__, config);
 
 
-    const callAction = (activityInfo: IActivityInfo) =>
-        R.when(configHas, R.compose((activity: Function) => R.call(activity, activityInfo), configProp));
+        const callAction = (activityInfo: IActivityInfo) =>
+            R.when(configHas, R.compose((activity: Function) => R.call(activity, activityInfo), configProp));
 
-    const getActivityFromChange = (actions: Map<string, string>) => (item: string) =>
-        actions.has(item) ? actions.get(item) : item;
+        const getActivityFromChange = (actions: Map<string, string>) => (item: string) =>
+            actions.has(item) ? actions.get(item) : item;
 
-    const getActivityFromChangeWithActions = getActivityFromChange(actions);
+        const getActivityFromChangeWithActions = getActivityFromChange(actions);
 
-    const emitActivityForSocialSubScribe = (callback: Function) => (body: any)  => R.when(
-        R.has("entry"),
-        R.compose(
-            () => callback(body),
-            R.map(
-                R.converge(
-                    (activity: string, activityInfo: IActivityInfo) => {
+        const emitActivityForSocialSubScribe = (callback: Function) => (body: any) => R.when(
+            R.has("entry"),
+            R.compose(
+                () => callback(body),
+                R.map(
+                    R.converge(
+                        (activity: string, activityInfo: IActivityInfo) => {
 
-                        const callActionWithActivityInfo = callAction(activityInfo);
+                            const callActionWithActivityInfo = callAction(activityInfo);
 
-                        R.when(callActionWithActivityInfo,
-                            () => callActionWithActivityInfo(activity)
-                        )("filter");
+                            R.when(callActionWithActivityInfo,
+                                () => callActionWithActivityInfo(activity)
+                            )("filter");
 
-                    },
-                    [
-                        (change: IChange): string => getActivityFromChangeWithActions(change.value.item),
-                        (change: IChange): IActivityInfo => {
+                        },
+                        [
+                            (change: IChange): string => getActivityFromChangeWithActions(change.value.item),
+                            (change: IChange): IActivityInfo => {
 
-                            return {
-                                from: change.value.sender_id,
-                                raw: change,
-                                type: change.value.item
+                                return {
+                                    from: change.value.sender_id,
+                                    raw: change,
+                                    type: change.value.item
+                                }
                             }
-                        }
 
-                    ])
-            ),
-            R.chain(
-                R.converge(
-                    (id: string, changes: Array<IChange>) => R.map(R.assoc("id", id))(changes),
-                    [R.prop("id"),
-                        R.compose(
-                            R.filter(
-                                R.propSatisfies(
-                                    (value: any) => value.published !== undefined && value.published || 1
-                                    , 'value')),
-                            R.prop("changes")
-                        )]
-                )
-            ),
-            R.prop("entry"))
-    )(body);
+                        ])
+                ),
+                R.chain(
+                    R.converge(
+                        (id: string, changes: Array<IChange>) => R.map(R.assoc("id", id))(changes),
+                        [R.prop("id"),
+                            R.compose(
+                                R.filter(
+                                    R.propSatisfies(
+                                        (value: any) => value.published !== undefined && value.published || 1
+                                        , 'value')),
+                                R.prop("changes")
+                            )]
+                    )
+                ),
+                R.prop("entry"))
+        )(body);
 
-    const extractDataFromRequest = (callback: (data: any) => void) => (request: IncomingMessage) => {
-        let data: string = "";
-        request.on("data", (chunk: any) => {
-            data += chunk.toString();
+        const extractDataFromRequest = (callback: (data: any) => void) => (request: IncomingMessage) => {
+            let data: string = "";
+            request.on("data", (chunk: any) => {
+                data += chunk.toString();
 
-        });
-        request.on("end", () => {
-            callback(JSON.parse(data))
-        });
-        return;
-    };
+            });
+            request.on("end", () => {
+                callback(JSON.parse(data))
+            });
+            return;
+        };
 
         const emitActivityForSocialSubScribeWithCallback = emitActivityForSocialSubScribe(callback);
 
-    const processPostRequest = R.ifElse(R.has("body"),
-        R.compose( emitActivityForSocialSubScribeWithCallback, R.prop("body")),
-        extractDataFromRequest(emitActivityForSocialSubScribeWithCallback)
-    );
+        const processPostRequest = R.ifElse(R.has("body"),
+            R.compose(emitActivityForSocialSubScribeWithCallback, R.prop("body")),
+            extractDataFromRequest(emitActivityForSocialSubScribeWithCallback)
+        );
 
-    return R.when(R.propEq('method', 'POST'), processPostRequest);
+        return R.when(R.propEq('method', 'POST'), processPostRequest);
 
-};
+    };
 
 export const publishComment = (graphApiHost: string) =>
     (accessToken: string) =>

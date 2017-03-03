@@ -7,8 +7,8 @@ const expect = chai.expect;
 
 describe("Fecebook helper", function(){
     this.timeout(80000);
-    const accessToken = "EAADvbGAQt94BAAiHuOpqjnLCIMA6CqRlqQackmdAmMvkd7LngYMpN8oybY7hSPFMrlweIXYatkzpq7li2TgpBugYedB" +
-        "nyO3QuCKc9zwTFf0aY1dlb6xnIdbXwEC5QASx9JfhM9HyQBXMlOvo2Ilgy9mCDU6YZCrQ9cZAsXRM89ThqmsEJNq9MJB8f8ZAnMZD";
+    const accessToken = "EAADvbGAQt94BAA9yKHhwMFDGAnUmCGPQnOVSTr3eYmGnW9DR95UuljxpIlAsQL4ala7riaWQXd3cCENWuXvvBp" +
+        "sN8eKoODetGzXXXlo1ZAo6S1jcydmSdlQ1LuoZBEy6H4REM4ARPu6FmXvGe88kJUEhDvuswOqhauN0A1OtyGyZCdSG5o4kgps1JZCE2l0ZD";
     const graphApiHost = "https://graph.facebook.com";
 
 

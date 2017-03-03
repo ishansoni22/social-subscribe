@@ -21,9 +21,9 @@ describe("Test subscribe service", function () {
     this.timeout(50000);
     let server: any;
     let tunnel: any;
-    const shortLivedAccessToken = "EAADvbGAQt94BAAiHuOpqjnLCIMA6CqRlqQackmdAmMvkd7LngYMpN8oybY7hSPFMrlw" +
-        "eIXYatkzpq7li2TgpBugYedBnyO3QuCKc9zwTFf0aY1dlb6xnIdbXwEC5QASx9JfhM9HyQBXMlOvo2Ilgy9mCDU6YZCrQ9cZAs" +
-        "XRM89ThqmsEJNq9MJB8f8ZAnMZD";
+    const shortLivedAccessToken = "EAADvbGAQt94BAA9yKHhwMFDGAnUmCGPQnOVSTr3eYmGnW9DR95UuljxpIlAsQL4ala7riaWQXd3cCENWu" +
+        "XvvBpsN8eKoODetGzXXXlo1ZAo6S1jcydmSdlQ1LuoZBEy6H4REM4ARPu6FmXvGe88kJUEhDvuswOqhauN0A1OtyGyZCdSG5o4kgps1JZC" +
+        "E2l0ZD";
     const config = {
         uuid: "123456789",
         appId: "263248747214814",
@@ -66,49 +66,6 @@ describe("Test subscribe service", function () {
             expect(obj).to.haveOwnProperty("success");
             expect(obj.success).to.be.true;
             done();
-
-            // const getPageDetails = getUserPageDetailsCurry(config);
-            // const doFbPostOnPage = doFbPostOnPageCurry(config)("This is a test post");
-            // const lookUpLongLivedAccessToken = lookUpLongLivedAccessTokenCurry(Task)(config);
-            //
-            //
-            // const pageIds: any = R.compose(
-            //     R.map(R.prop("data")),
-            //     R.chain(getPageDetails),
-            //     lookUpLongLivedAccessToken,
-            //     );
-            //
-            //
-            //
-            // const doFbPostOnPageAccessToken = R.compose(
-            //     R.map(doFbPostOnPage),
-            //     lookUpLongLivedAccessToken);
-            //
-            //
-            // const doFbPost = R.compose(
-            //
-            //     R.unnest,
-            //     R.map((R.sequence(Task.of))),
-            //     R.map(
-            //         R.map(
-            //             //=> pageId
-            //             doFbPostOnPageAccessToken
-            //         )
-            //     ),
-            //     pageIds);
-
-            // pages_show_list
-            // manage pages
-            // publish_actions
-
-            // const temp: any = doFbPost();
-            // doFbPost(config).fork(done, (pageIds: any) => {
-            //     pageIds[0]();
-            //     expect(pageIds).to.be.not.empty;
-            //     expect(pageIds).to.be.instanceof(Array);
-            //
-            //     done();
-            // });
 
         });
 
@@ -171,7 +128,7 @@ describe("Test subscribe service", function () {
         };
 
 
-        apiCallback( config.socialNetwork) ({onPost}) (() => done())(req);
+        apiCallback( config.socialNetwork) ({onPost}) (() => {})(req);
         const requestString = JSON.stringify(requestObj);
         req.write(new Buffer(requestString));
         req.end();
@@ -294,7 +251,7 @@ describe("Test subscribe service", function () {
 
     });
 
-    it.only("should emit proper events for comment with express like request", (done) => {
+    it("should emit proper events for comment with express like request", (done) => {
         const res = new MockRes(function () {
             console.log('Response finished');
         });
