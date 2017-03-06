@@ -6,7 +6,7 @@ In it's current state it can help to subscribe users facebook pages. It will giv
  events like "success" and "error". On case of successful subscription "success" event will be emitted. In case of any
   error like access token expiry "error" will be emitted with error object  containing  details of error.  
 
-With the [helper functions](#Helpers) you can attach handlers to handle facebook notification requests sent to the `callbackURL` 
+With the [helper functions](#helpers) you can attach handlers to handle facebook notification requests sent to the `callbackURL` 
  you configure.
  
 ## Installation
