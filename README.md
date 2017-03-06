@@ -2,9 +2,13 @@
 The goal of this library is to provide an abstraction over most popular social networks for subscribing to 
 user activity.
 
-In it's current state it can help to subscribe users facebook pages. It will give you an event emitter which emits events like "post", "comment" etc. with the 
-update as soon as there is any activity on pages. 
+In it's current state it can help to subscribe users facebook pages. It will give you an event emitter which emits
+ events like "success" and "error". On case of successful subscription "success" event will be emitted. In case of any
+  error like access token expiry "error" will be emitted with error object  containing  details of error.  
 
+With the [helper functions](#Helpers) you can attach handlers to handle facebook notification requests sent to the `callbackURL` 
+ you configure.
+ 
 ## Installation
 You can install this package from npm via following command 
 ```sh
@@ -74,6 +78,7 @@ P.S.: I have used typescript to write this library, and give examples. It is not
 your project to consume this library. 
 
 
+### Helpers
 Along with subscriptions we are providing helper functions. 
 
 #### Callback Helper
@@ -140,7 +145,7 @@ We will also provide helper functions which will include independent API calls t
 
 ## TODO
 - [ ]  Add documentation for Installation
-- [ ]  Add documentation for How to use
+- [X]  Add documentation for How to use
 - [ ]  Add documentation for How it works
 - [X]  Create NPM package
 - [ ]  Add code coverage

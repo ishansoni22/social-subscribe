@@ -1,13 +1,12 @@
 
 const MockReq: any = require('mock-req');
 const MockRes: any = require('mock-res');
-
-
 import * as chai from "chai";
-import {IActivityInfo} from "../src/recipes/facebook";
 const localtunnel = require('localtunnel');
 
-import {repository} from "./utils/repository";
+import {config} from "./utils/config";
+import {IActivityInfo} from "../src/recipes/facebook";
+
 import {createServer as createServerCurry} from "./utils/server";
 import {SocialSubscribe, apiCallback} from "../src/index";
 import {IncomingMessage} from "http";
@@ -21,19 +20,6 @@ describe("Test subscribe service", function () {
     this.timeout(50000);
     let server: any;
     let tunnel: any;
-    const shortLivedAccessToken = "EAADvbGAQt94BAA9yKHhwMFDGAnUmCGPQnOVSTr3eYmGnW9DR95UuljxpIlAsQL4ala7riaWQXd3cCENWu" +
-        "XvvBpsN8eKoODetGzXXXlo1ZAo6S1jcydmSdlQ1LuoZBEy6H4REM4ARPu6FmXvGe88kJUEhDvuswOqhauN0A1OtyGyZCdSG5o4kgps1JZC" +
-        "E2l0ZD";
-    const config = {
-        uuid: "123456789",
-        appId: "263248747214814",
-        appSecret: "4454810a488876bc8b716e76f8be8de2",
-        callBackURL: "http://localhost:3050",
-        graphApiHost: "https://graph.facebook.com",
-        repository,
-        shortLivedAccessToken,
-        socialNetwork: "facebook",
-    };
 
     before((done) => {
         server = createServer((err: Error) => {
@@ -73,13 +59,11 @@ describe("Test subscribe service", function () {
 
         const onPost = (activityInfo: IActivityInfo) => {
             expect(activityInfo.type).to.be.not.empty;
-
-            // expect(activityInfo.raw).to.be.equal(requestObj.entry[0].changes[0].value);
-             done();
+            done();
         };
-
+        const apiCallbackConfigured = apiCallback(config.socialNetwork)({onPost})((args: any) => console.log(args));
         server.on("request",(req: IncomingMessage, res: IncomingMessage)=> {
-            apiCallback(config.socialNetwork)({onPost})((args: any) => console.log(args))(req);
+            apiCallbackConfigured(req);
         });
 
         socialSubscribe.start();
@@ -172,7 +156,6 @@ describe("Test subscribe service", function () {
         const onComment = (activityInfo: IActivityInfo) => {
             expect(activityInfo.type).to.be.not.empty;
             expect(activityInfo.type).to.be.equal("comment");
-            // expect(activityInfo.raw).to.be.equal(requestObj.entry[0].changes[0].value);
             done();
         };
 
@@ -295,10 +278,8 @@ describe("Test subscribe service", function () {
         };
         req.body = requestObj;
 
-        apiCallback(config.socialNetwork) ({onComment, filter})(() => done())(req);
-        // const requestString = JSON.stringify(requestObj);
+        apiCallback(config.socialNetwork) ({onComment, filter}) (() => done())(req);
 
-        // req.write(new Buffer(requestString));
         req.end();
 
     })
