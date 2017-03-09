@@ -51,7 +51,6 @@ export interface IFbRepository extends IRepository {
     setPages(uuid: string, pages: Array<IPage>): PromiseLike<boolean>;
     getPages(uuid: string): PromiseLike<Array<IPage>>;
 }
-export declare const lookupAppAccessToken: (Task: any) => (config: IFbConfig) => ITask;
 export declare const lookUpLongLivedAccessToken: (Task: any) => (config: IFbConfig) => () => any;
 export declare const persistLongLivedAccessToken: (Task: any) => (config: IFbConfig) => any;
 export declare const persistAppAccessToken: (Task: any) => (config: IFbConfig) => (appAccessToken: string) => any;
@@ -73,4 +72,5 @@ export declare const getAppAccessToken: (config: IConfig) => () => any;
 export declare const recipe: (config: IConfig) => ITask;
 export declare const apiCallbackHandlerFn: apiCallbackHandler;
 export declare const publishComment: (graphApiHost: string) => (accessToken: string) => (objectId: string) => (message: string) => any;
+export declare const isPageSubscriptionAliveCheckApiCall: (graphApiHost: string, objectId: string, pageAccessToken: string) => ITask;
 export declare const name: string;

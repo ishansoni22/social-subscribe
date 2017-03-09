@@ -59,7 +59,7 @@ describe("Fecebook helper", function () {
         });
     });
 
-    it.only("checks if subscription is still alive", (done) => {
+    it("checks if subscription is still alive", (done) => {
         interface IApp {
             category: string;
             id: string;
