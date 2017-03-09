@@ -1,7 +1,7 @@
 "use strict";
 
 import * as chai from "chai";
-import {publishComment, IPage, isPageSubscriptionAliveCheckApiCall} from "../../src/recipes/facebook";
+import {publishComment, IPage, isPageSubscriptionAliveApiCall} from "../../src/recipes/facebook";
 import {config} from "../utils/config";
 import {SocialSubscribe} from "../../src/index";
 import {IConfig} from "../../src/config/config";
@@ -70,7 +70,7 @@ describe("Fecebook helper", function () {
         const checkIfFacebookPageSubscriptionIsAlive = (config: IConfig) =>
             (pageDetails: {pageAccessToken: string, pageId: string}): PromiseLike<any> => {
 
-                const pageSubscriptionCheckFn = isPageSubscriptionAliveCheckApiCall(
+                const pageSubscriptionCheckFn = isPageSubscriptionAliveApiCall(
                     config.graphApiHost,
                     pageDetails.pageId,
                     pageDetails.pageAccessToken);

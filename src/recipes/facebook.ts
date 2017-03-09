@@ -340,7 +340,7 @@ export const publishComment = (graphApiHost: string) =>
                 return requestService(subscribeOptions);
             };
 
-export const isPageSubscriptionAliveCheckApiCall =
+export const isPageSubscriptionAliveApiCall =
     (graphApiHost: string, objectId: string, pageAccessToken: string): ITask => {
 
     const isPageSubscriptionAliveURI = graphApiHost

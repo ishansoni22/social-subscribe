@@ -72,5 +72,5 @@ export declare const getAppAccessToken: (config: IConfig) => () => any;
 export declare const recipe: (config: IConfig) => ITask;
 export declare const apiCallbackHandlerFn: apiCallbackHandler;
 export declare const publishComment: (graphApiHost: string) => (accessToken: string) => (objectId: string) => (message: string) => any;
-export declare const isPageSubscriptionAliveCheckApiCall: (graphApiHost: string, objectId: string, pageAccessToken: string) => ITask;
+export declare const isPageSubscriptionAliveApiCall: (graphApiHost: string, objectId: string, pageAccessToken: string) => ITask;
 export declare const name: string;
