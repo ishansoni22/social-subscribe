@@ -73,7 +73,7 @@ export interface IFbRepository extends IRepository {
 }
 
 
-export const lookupAppAccessToken = (Task: any) => (config: IFbConfig): ITask =>
+const lookupAppAccessToken = (Task: any) => (config: IFbConfig): ITask =>
     new Task((reject: any, resolve: any) => {
         config.repository.getAppAccessToken(config.appId).then(resolve, reject);
     });
@@ -339,5 +339,26 @@ export const publishComment = (graphApiHost: string) =>
                 };
                 return requestService(subscribeOptions);
             };
+
+export const isPageSubscriptionAliveCheckApiCall =
+    (graphApiHost: string, objectId: string, pageAccessToken: string): ITask => {
+
+    const isPageSubscriptionAliveURI = graphApiHost
+        .concat("/")
+        .concat(objectId)
+        .concat("/subscribed_apps")
+
+
+    const options: requestOptions = {
+        method: "GET",
+        qs: {
+            access_token: pageAccessToken
+        },
+        uri: isPageSubscriptionAliveURI,
+    };
+
+    return requestService(options);
+
+};
 
 export const name = "facebook";

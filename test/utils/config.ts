@@ -3,8 +3,9 @@
  */
 
 import {repository} from "./repository";
-const shortLivedAccessToken = "EAADvbGAQt94BABAH54HKt917Yld9wqTr9JbkEaLc0sMfx7rffi8PkQoTElr8r1SRg363G5lZBjFDEyb" +
-    "aQfKjSmiK8rwe1rrugH0bW5vwa4cHZBbsNMxM6OEHeftcKJndFGbmjuUXYs5ElHACo6rPP12YQpOl8ygHN9C6DlZBiRq7Y5EuVsqV1QGTa8ivtUZD";
+const shortLivedAccessToken = "EAADvbGAQt94BAB9MlnpcVU4dyS6ZBZAIAk47ngrHe4D6NjJDkPMrGHYjvf0Az52IhoIw9ow3AgN" +
+    "gPW9UR8pGoW0SyClV63JEEZBhOZARGXjxdx4JnfveSa3QhH3uHBrIjQYhaZCCylMhZBRuE2wAm4Ho0iZBs8IuW6ZCHVRRfpv0mE" +
+    "3iPZBTFa9K5hCrWp2oo7fUZD";
 export const config = {
     uuid: "123456789",
     appId: "263248747214814",
